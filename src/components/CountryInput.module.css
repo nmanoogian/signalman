@@ -56,12 +56,6 @@
   font-weight: 600;
 }
 
-.hint {
-  margin: 10px 0 0;
-  color: var(--text-muted);
-  font-size: 0.82rem;
-}
-
 @media (max-width: 560px) {
   .list {
     max-height: 32vh;

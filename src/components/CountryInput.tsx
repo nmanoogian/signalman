@@ -120,7 +120,6 @@ export function CountryInput({ onSelect, shakeToken }: CountryInputProps) {
           ))}
         </ul>
       )}
-      {!open && <p className={styles.hint}>Pick a country from the list to lock in your guess.</p>}
     </div>
   );
 }
