@@ -10,10 +10,6 @@ const REPO_ROOT = path.resolve(import.meta.dirname, "..");
 const FLAG_OUT_DIR = path.join(REPO_ROOT, "public", "flags");
 const DATA_OUT_FILE = path.join(REPO_ROOT, "src", "data", "countries.ts");
 
-// Codes `flag-icons` ships and Intl resolves, but which ISO 3166-1 does not
-// officially assign to a country.
-const NOT_OFFICIALLY_ASSIGNED = new Set(["cp", "dg", "eu", "ic", "un", "xk"]);
-
 const NAME_OVERRIDES = {
   cd: "Democratic Republic of the Congo",
   cg: "Republic of the Congo",
@@ -30,15 +26,18 @@ const NAME_OVERRIDES = {
 // Extra strings the autocomplete should match, beyond the canonical name.
 const ALIASES = {
   ae: ["UAE", "Emirates"],
+  ax: ["Aland Islands"],
   bn: ["Borneo"],
   cd: ["DRC", "Congo Kinshasa", "Zaire"],
   cg: ["Congo Brazzaville"],
   ci: ["Ivory Coast"],
   cv: ["Cape Verde"],
   cz: ["Czech Republic", "Czechoslovakia"],
+  eu: ["EU"],
   gb: ["UK", "United Kingdom", "Britain", "Great Britain", "England"],
   kp: ["DPRK"],
   kr: ["ROK", "Korea"],
+  ic: ["Canaries"],
   la: ["Laos"],
   mk: ["Macedonia"],
   mm: ["Burma"],
@@ -46,6 +45,7 @@ const ALIASES = {
   sz: ["Swaziland"],
   tl: ["East Timor"],
   tr: ["Turkey"],
+  un: ["UN"],
   us: ["USA", "United States of America", "America"],
   va: ["Vatican", "Vatican City"],
   vn: ["Viet Nam"],
@@ -74,12 +74,9 @@ const countries = fs
   .readdirSync(flagsDir)
   .filter((file) => file.endsWith(".svg"))
   .map((file) => file.slice(0, -4))
-  .filter(
-    (code) =>
-      code.length === 2 &&
-      !NOT_OFFICIALLY_ASSIGNED.has(code) &&
-      displayNames.of(code.toUpperCase()),
-  )
+  // Two-letter codes CLDR can name: the 249 ISO 3166-1 assignments plus reserved codes
+  // such as EU, UN and XK. Codes with no English name (`xx`, `pc`) are dropped.
+  .filter((code) => code.length === 2 && displayNames.of(code.toUpperCase()))
   .map((code) => ({ code, name: canonicalName(code, displayNames), aliases: ALIASES[code] ?? [] }))
   .toSorted((a, b) => a.name.localeCompare(b.name, "en"));
 
