@@ -41,7 +41,6 @@ export function GuessView({ code, stage, onGuess, onSkip, onGiveUp, onContinue }
             }`}
           >
             <img className={styles.flag} src={flagUrl(code)} alt="Flag of an unnamed country" />
-            {stage === "correct" && <div className={styles.burst} aria-hidden="true" />}
           </div>
         </div>
       </div>
