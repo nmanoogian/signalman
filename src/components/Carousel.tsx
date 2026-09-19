@@ -132,9 +132,16 @@ export function Carousel({ pool, onSpinStart, onLand }: CarouselProps) {
     onSpinStart();
   }, [onSpinStart, ring.length]);
 
+  // The wheel only picks out its centre flag once a spin is under way.
+  const spotlit = spinning || landed;
+
   return (
     <div className={styles.carousel}>
-      <div className={`${styles.viewport} ${landed ? styles.viewportLanded : ""}`}>
+      <div
+        className={`${styles.viewport} ${spotlit ? styles.spotlight : ""} ${
+          landed ? styles.viewportLanded : ""
+        }`}
+      >
         <div className={styles.stage} ref={stageRef}>
           {ring.map((code, slot) => (
             <div

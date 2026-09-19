@@ -20,12 +20,12 @@ export function App() {
   );
 
   const { view } = game;
-  const guessed = game.total - game.remaining.length;
+  const started = game.remaining.length < game.total;
 
   const handleReset = useCallback(() => {
-    if (guessed > 0 && !window.confirm("Put all flags back in the pool?")) return;
+    if (started && !window.confirm("Put all flags back in the pool?")) return;
     game.reset();
-  }, [game, guessed]);
+  }, [game, started]);
 
   return (
     <div className={styles.app}>
@@ -60,7 +60,8 @@ export function App() {
       <footer className={styles.footer}>
         {view.kind === "carousel" && !game.isCleared && (
           <p className={styles.progress}>
-            {guessed} of {game.total} flags cleared · {game.remaining.length} still on the wheel
+            <b>{game.correctCount}</b> Correct, <b>{game.gaveUpCount}</b> Skipped,{" "}
+            <b>{game.remaining.length}</b> Left
           </p>
         )}
       </footer>

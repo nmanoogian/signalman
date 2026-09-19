@@ -70,3 +70,9 @@
   letter-spacing: 0.04em;
   text-align: center;
 }
+
+.progress b {
+  color: var(--text);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}

@@ -42,10 +42,13 @@
   backface-visibility: hidden;
   transform: rotateY(calc(var(--slot) * var(--step))) translateZ(var(--radius));
   transition: filter 300ms ease;
+}
+
+.spotlight .item {
   filter: brightness(0.5) saturate(0.7);
 }
 
-.front {
+.spotlight .front {
   filter: brightness(1.12) saturate(1.1) drop-shadow(0 0 22px rgb(69 224 255 / 45%));
 }
 

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { COUNTRIES, type CountryCode } from "../data/countries";
-import { loadPool, savePool } from "./storage";
+import { loadProgress, saveProgress, type Progress } from "./storage";
 
 const ALL_CODES: readonly CountryCode[] = COUNTRIES.map((country) => country.code);
+const FRESH: Progress = { remaining: ALL_CODES, gaveUp: [] };
 
 export type View =
   | { kind: "carousel" }
@@ -13,6 +14,8 @@ export type View =
 export interface Game {
   remaining: readonly CountryCode[];
   total: number;
+  correctCount: number;
+  gaveUpCount: number;
   view: View;
   isCleared: boolean;
   present: (code: CountryCode) => void;
@@ -24,16 +27,12 @@ export interface Game {
 }
 
 export function useGame(): Game {
-  const [remaining, setRemaining] = useState<readonly CountryCode[]>(() => loadPool() ?? ALL_CODES);
+  const [progress, setProgress] = useState<Progress>(() => loadProgress() ?? FRESH);
   const [view, setView] = useState<View>({ kind: "carousel" });
 
   useEffect(() => {
-    savePool(remaining);
-  }, [remaining]);
-
-  const retire = useCallback((code: CountryCode) => {
-    setRemaining((pool) => pool.filter((candidate) => candidate !== code));
-  }, []);
+    saveProgress(progress);
+  }, [progress]);
 
   const present = useCallback((code: CountryCode) => {
     setView({ kind: "guessing", code });
@@ -43,11 +42,14 @@ export function useGame(): Game {
     (code: CountryCode) => {
       if (view.kind !== "guessing") return false;
       if (code !== view.code) return false;
-      retire(view.code);
+      setProgress((current) => ({
+        ...current,
+        remaining: current.remaining.filter((candidate) => candidate !== code),
+      }));
       setView({ kind: "correct", code: view.code });
       return true;
     },
-    [retire, view],
+    [view],
   );
 
   const skip = useCallback(() => {
@@ -56,24 +58,30 @@ export function useGame(): Game {
 
   const giveUp = useCallback(() => {
     if (view.kind !== "guessing") return;
-    retire(view.code);
-    setView({ kind: "revealed", code: view.code });
-  }, [retire, view]);
+    const { code } = view;
+    setProgress((current) => ({
+      remaining: current.remaining.filter((candidate) => candidate !== code),
+      gaveUp: [...current.gaveUp, code],
+    }));
+    setView({ kind: "revealed", code });
+  }, [view]);
 
   const returnToCarousel = useCallback(() => {
     setView({ kind: "carousel" });
   }, []);
 
   const reset = useCallback(() => {
-    setRemaining(ALL_CODES);
+    setProgress(FRESH);
     setView({ kind: "carousel" });
   }, []);
 
   return {
-    remaining,
+    remaining: progress.remaining,
     total: ALL_CODES.length,
+    correctCount: ALL_CODES.length - progress.remaining.length - progress.gaveUp.length,
+    gaveUpCount: progress.gaveUp.length,
     view,
-    isCleared: remaining.length === 0,
+    isCleared: progress.remaining.length === 0,
     present,
     submitGuess,
     skip,
