@@ -26,30 +26,6 @@
   color: transparent;
 }
 
-.reset {
-  padding: 9px 20px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: rgb(255 255 255 / 3%);
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  transition:
-    color 160ms ease,
-    border-color 160ms ease;
-}
-
-.reset:hover:not(:disabled) {
-  color: var(--text);
-  border-color: var(--text-muted);
-}
-
-.reset:disabled {
-  opacity: 0.4;
-}
-
 .main {
   display: flex;
   align-items: center;

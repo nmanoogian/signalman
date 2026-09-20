@@ -9,7 +9,7 @@ interface GuessViewProps {
   code: CountryCode;
   stage: "guessing" | "correct" | "revealed";
   onGuess: (country: Country) => boolean;
-  onSkip: () => void;
+  onSkip?: (() => void) | undefined;
   onGiveUp: () => void;
   onContinue: () => void;
 }
@@ -56,9 +56,11 @@ export function GuessView({ code, stage, onGuess, onSkip, onGiveUp, onContinue }
               </p>
             )}
             <div className={styles.actions}>
-              <button type="button" className={styles.secondary} onClick={onSkip}>
-                Skip
-              </button>
+              {onSkip && (
+                <button type="button" className={styles.secondary} onClick={onSkip}>
+                  Skip
+                </button>
+              )}
               <button type="button" className={styles.secondary} onClick={onGiveUp}>
                 Give Up
               </button>

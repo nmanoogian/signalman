@@ -7,10 +7,21 @@ A country flag guessing game. Spin the wheel, name the flag it lands on.
 The carousel idles with a slow spin. **Spin** accelerates it and lands on one flag, which
 expands so you can name it. Guesses come from the autocomplete, so spelling is never the
 problem. A correct guess retires the flag from the pool; **Skip** puts it back on the wheel
-and **Give Up** reveals the answer and retires it. **Reset** refills the pool with all 242
-flags.
+and **Give Up** reveals the answer and retires it.
 
-Progress lives in local storage, so closing the tab keeps your pool.
+## Study Mode
+
+The menu offers **New Game** and **New Study Session**. Study Mode drills a growing set
+instead of the whole pool, and skips the carousel entirely — flags come one after another.
+
+A session opens with five random flags, each needing three correct guesses. Clear them all
+and five more are added, every count resets, and the round repeats: the five new flags need
+three correct guesses, everything introduced earlier needs one. A wrong guess or a **Give
+Up** wipes that flag's count back to zero, so a flag is only learned once you can name it
+cleanly. Rounds continue until all 242 flags have been through the rotation.
+
+Only one session exists at a time. The mode you are in is remembered, so a reload drops you
+back where you were — but starting a new game clears a study session and vice versa.
 
 ## Development
 
