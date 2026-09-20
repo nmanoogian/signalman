@@ -10,6 +10,24 @@ const REPO_ROOT = path.resolve(import.meta.dirname, "..");
 const FLAG_OUT_DIR = path.join(REPO_ROOT, "public", "flags");
 const DATA_OUT_FILE = path.join(REPO_ROOT, "src", "data", "countries.ts");
 
+// `flag-icons` draws these exactly like another entry's flag, which makes them unguessable.
+// Each is dropped in favour of the code listed beside it, which keeps the flag.
+const DUPLICATE_FLAGS = new Map([
+  ["bl", "fr"],
+  ["cp", "fr"],
+  ["gf", "fr"],
+  ["gp", "fr"],
+  ["mf", "fr"],
+  ["pm", "fr"],
+  ["re", "fr"],
+  ["wf", "fr"],
+  ["yt", "fr"],
+  ["hm", "au"],
+  ["sh", "gb"],
+  ["um", "us"],
+  ["dg", "io"],
+]);
+
 const NAME_OVERRIDES = {
   cd: "Democratic Republic of the Congo",
   cg: "Republic of the Congo",
@@ -17,10 +35,8 @@ const NAME_OVERRIDES = {
   mo: "Macao",
   mm: "Myanmar",
   ps: "Palestine",
-  um: "United States Minor Outlying Islands",
   vc: "Saint Vincent and the Grenadines",
   gs: "South Georgia and the South Sandwich Islands",
-  hm: "Heard Island and McDonald Islands",
 };
 
 // Extra strings the autocomplete should match, beyond the canonical name.
@@ -76,7 +92,10 @@ const countries = fs
   .map((file) => file.slice(0, -4))
   // Two-letter codes CLDR can name: the 249 ISO 3166-1 assignments plus reserved codes
   // such as EU, UN and XK. Codes with no English name (`xx`, `pc`) are dropped.
-  .filter((code) => code.length === 2 && displayNames.of(code.toUpperCase()))
+  .filter(
+    (code) =>
+      code.length === 2 && !DUPLICATE_FLAGS.has(code) && displayNames.of(code.toUpperCase()),
+  )
   .map((code) => ({ code, name: canonicalName(code, displayNames), aliases: ALIASES[code] ?? [] }))
   .toSorted((a, b) => a.name.localeCompare(b.name, "en"));
 
