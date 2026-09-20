@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { COUNTRIES_BY_CODE, flagUrl, type Country, type CountryCode } from "../data/countries";
 import { CountryInput } from "./CountryInput";
 import styles from "./GuessView.module.css";
@@ -19,11 +19,17 @@ export function GuessView({ code, stage, onGuess, onSkip, onGiveUp, onContinue }
   const [misses, setMisses] = useState(0);
   const [lastMiss, setLastMiss] = useState<string | null>(null);
 
+  const onContinueRef = useRef(onContinue);
+
+  useEffect(() => {
+    onContinueRef.current = onContinue;
+  });
+
   useEffect(() => {
     if (stage !== "correct") return;
-    const timer = window.setTimeout(onContinue, SUCCESS_DURATION_MS);
+    const timer = window.setTimeout(() => onContinueRef.current(), SUCCESS_DURATION_MS);
     return () => window.clearTimeout(timer);
-  }, [onContinue, stage]);
+  }, [stage]);
 
   const handleGuess = (guess: Country) => {
     if (onGuess(guess)) return;

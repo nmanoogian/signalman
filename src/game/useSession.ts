@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { COUNTRIES, type CountryCode } from "../data/countries";
 import { loadSession, saveSession, type GameProgress, type Session } from "./storage";
 import {
@@ -18,18 +18,20 @@ import {
 const ALL_CODES: readonly CountryCode[] = COUNTRIES.map((country) => country.code);
 const FRESH_GAME: GameProgress = { remaining: ALL_CODES, gaveUp: [] };
 
+// `seq` counts flag presentations so the guess view remounts for each new prompt, even when
+// the same flag comes round again.
 export type View =
   | { kind: "carousel" }
-  | { kind: "guessing"; code: CountryCode }
-  | { kind: "correct"; code: CountryCode }
-  | { kind: "revealed"; code: CountryCode }
+  | { kind: "guessing"; code: CountryCode; seq: number }
+  | { kind: "correct"; code: CountryCode; seq: number }
+  | { kind: "revealed"; code: CountryCode; seq: number }
   | { kind: "roundComplete" }
   | { kind: "studyComplete" };
 
 function startingView(session: Session): View {
   if (session.mode === "game") return { kind: "carousel" };
   const { current } = session.study;
-  if (current !== null) return { kind: "guessing", code: current };
+  if (current !== null) return { kind: "guessing", code: current, seq: 0 };
   return hasUnintroduced(session.study) ? { kind: "roundComplete" } : { kind: "studyComplete" };
 }
 
@@ -43,6 +45,9 @@ function restore(): Session {
 export function useSession() {
   const [session, setSession] = useState<Session>(restore);
   const [view, setView] = useState<View>(() => startingView(session));
+  const seqRef = useRef(0);
+
+  const nextSeq = useCallback(() => ++seqRef.current, []);
 
   useEffect(() => {
     saveSession(session);
@@ -55,9 +60,12 @@ export function useSession() {
     setSession({ mode: "study", study: next });
   }, []);
 
-  const present = useCallback((code: CountryCode) => {
-    setView({ kind: "guessing", code });
-  }, []);
+  const present = useCallback(
+    (code: CountryCode) => {
+      setView({ kind: "guessing", code, seq: nextSeq() });
+    },
+    [nextSeq],
+  );
 
   const submitGuess = useCallback(
     (code: CountryCode) => {
@@ -75,7 +83,7 @@ export function useSession() {
           game: { ...game, remaining: game.remaining.filter((c) => c !== view.code) },
         });
       }
-      setView({ kind: "correct", code: view.code });
+      setView({ kind: "correct", code: view.code, seq: view.seq });
       return true;
     },
     [game, setStudy, study, view],
@@ -98,7 +106,7 @@ export function useSession() {
         },
       });
     }
-    setView({ kind: "revealed", code });
+    setView({ kind: "revealed", code, seq: view.seq });
   }, [game, setStudy, study, view]);
 
   // Leaving the flag the player just finished with: back to the wheel in a game, on to the
@@ -115,9 +123,9 @@ export function useSession() {
     setView(
       study.current === null
         ? { kind: "roundComplete" }
-        : { kind: "guessing", code: study.current },
+        : { kind: "guessing", code: study.current, seq: nextSeq() },
     );
-  }, [study]);
+  }, [nextSeq, study]);
 
   const startNextRound = useCallback(() => {
     if (study === null) return;
@@ -126,9 +134,9 @@ export function useSession() {
     setView(
       opened.current === null
         ? { kind: "studyComplete" }
-        : { kind: "guessing", code: opened.current },
+        : { kind: "guessing", code: opened.current, seq: nextSeq() },
     );
-  }, [setStudy, study]);
+  }, [nextSeq, setStudy, study]);
 
   const newGame = useCallback(() => {
     setSession({ mode: "game", game: FRESH_GAME });
@@ -141,9 +149,9 @@ export function useSession() {
     setView(
       opened.current === null
         ? { kind: "studyComplete" }
-        : { kind: "guessing", code: opened.current },
+        : { kind: "guessing", code: opened.current, seq: nextSeq() },
     );
-  }, []);
+  }, [nextSeq]);
 
   const gameCorrect = game === null ? 0 : TOTAL_FLAGS - game.remaining.length - game.gaveUp.length;
 

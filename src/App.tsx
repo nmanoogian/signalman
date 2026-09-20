@@ -66,6 +66,7 @@ export function App() {
       case "revealed":
         return (
           <GuessView
+            key={view.seq}
             code={view.code}
             stage={view.kind}
             onGuess={(country) => session.submitGuess(country.code)}
