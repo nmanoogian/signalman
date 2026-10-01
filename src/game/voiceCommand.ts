@@ -9,20 +9,9 @@ const PHRASES: readonly (readonly [VoiceCommand, readonly string[]])[] = [
   // the wheel is the only place these mean anything, and answering is the only place Spain is.
   ["spin", ["spin", "spin it", "spin the wheel", "hit me", "deal me in"]],
   ["skip", ["skip", "skip it", "skip this", "pass", "another one"]],
-  [
-    "giveUp",
-    [
-      "give up",
-      "giving up",
-      "i give up",
-      "reveal",
-      "show me",
-      "tell me",
-      "i don't know",
-      "no idea",
-      "no clue",
-    ],
-  ],
+  ["giveUp", ["give up", "giving up", "i give up", "reveal", "show me", "tell me"]],
+  // "I don't know", "no idea" and "no clue" are deliberately absent. They are what a player
+  // says while still thinking, or to a friend in the room — not a request to be told.
   // "go on" is deliberately absent: it is a plausible mistranscription of "Ghana", and
   // commands are matched first, so it would swallow a real answer.
   ["next", ["next", "next one", "continue", "carry on", "keep going", "move on"]],

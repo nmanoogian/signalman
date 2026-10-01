@@ -37,6 +37,14 @@ describe("matchCommand", () => {
     }
   });
 
+  // Thinking aloud, or talking to whoever else is in the room, must not cost the answer.
+  it("does not treat an admission of not knowing as asking to be told", () => {
+    for (const said of ["i don't know", "no idea", "no clue", "dunno", "not a clue"]) {
+      assert.equal(matchCommand(said, ALL), null, said);
+      assert.equal(matchSpeech(said).kind, "none", said);
+    }
+  });
+
   it("ignores commands that are not live in the current stage", () => {
     assert.equal(matchCommand("skip", ["yes", "no"]), null);
     assert.equal(matchCommand("yes", []), null);
