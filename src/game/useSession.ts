@@ -174,6 +174,9 @@ export function useSession() {
         ? null
         : {
             round: study.round,
+            // The flag after this one. Known during the "correct" pause, so it can be
+            // fetched before it is shown.
+            upcoming: study.current,
             setSize: study.introduced.length,
             repsRemaining: repsRemaining(study),
             nextRoundAdds: Math.min(ROUND_SIZE, TOTAL_FLAGS - study.introduced.length),

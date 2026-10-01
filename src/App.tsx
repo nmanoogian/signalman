@@ -6,6 +6,7 @@ import { Menu } from "./components/Menu";
 import { RoundComplete } from "./components/RoundComplete";
 import { VoiceBar } from "./components/VoiceBar";
 import styles from "./App.module.css";
+import { useFlagPreload } from "./game/preloadFlags";
 import { useSession } from "./game/useSession";
 import { useVoiceGuessing } from "./game/useVoiceGuessing";
 
@@ -25,6 +26,8 @@ export function App() {
 
   const { view, game, study } = session;
   const inProgress = study !== null || game === null || !game.isUntouched;
+
+  useFlagPreload("code" in view ? view.code : null, study?.upcoming ?? null);
 
   // Bumping the token spins the wheel from outside the Carousel, which is how a heard "spin"
   // reaches it without the component having to expose a handle.
