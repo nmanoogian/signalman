@@ -26,6 +26,9 @@ const DUPLICATE_FLAGS = new Map([
   ["sh", "gb"],
   ["um", "us"],
   ["dg", "io"],
+  ["bq", "nl"],
+  ["sj", "no"],
+  ["bv", "no"],
 ]);
 
 const NAME_OVERRIDES = {
