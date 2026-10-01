@@ -1,6 +1,7 @@
 import { COUNTRIES, type Country } from "../data/countries";
 
-function normalize(value: string): string {
+// Shared with voice matching so typed and spoken guesses fold the same way.
+export function normalize(value: string): string {
   return value
     .normalize("NFD")
     .replaceAll(/[̀-ͯ]/g, "")
