@@ -11,6 +11,14 @@ export interface SpeechHeard {
   isFinal: boolean;
 }
 
+// One recognizer session, start to finish. Restarts are invisible from the outside, so this is
+// the only way to see a platform cutting sessions short.
+export interface SpeechSession {
+  startedAt: number;
+  durationMs: number;
+  heardAnything: boolean;
+}
+
 // A session that ends this quickly without hearing anything never really started. iOS Safari
 // is reported to degrade this way after a number of restarts, and the only cure is to stop
 // restarting and let the player drive with push-to-talk.
@@ -23,6 +31,7 @@ interface SpeechOptions {
   mode: SpeechMode;
   lang: string;
   onHeard: (heard: SpeechHeard) => void;
+  onSessionEnd?: ((session: SpeechSession) => void) | undefined;
 }
 
 export interface SpeechControls {
@@ -45,7 +54,12 @@ function recognitionConstructor(): SpeechRecognitionConstructor | null {
   return window.SpeechRecognition ?? window.webkitSpeechRecognition ?? null;
 }
 
-export function useSpeechRecognition({ mode, lang, onHeard }: SpeechOptions): SpeechControls {
+export function useSpeechRecognition({
+  mode,
+  lang,
+  onHeard,
+  onSessionEnd,
+}: SpeechOptions): SpeechControls {
   const [supported] = useState(() => recognitionConstructor() !== null);
   const [status, setStatus] = useState<SpeechStatus>(supported ? "idle" : "unsupported");
   const [degraded, setDegraded] = useState(false);
@@ -57,11 +71,13 @@ export function useSpeechRecognition({ mode, lang, onHeard }: SpeechOptions): Sp
   const emptyRestartsRef = useRef(0);
   const timerRef = useRef(0);
   const heardRef = useRef(onHeard);
+  const sessionEndRef = useRef(onSessionEnd);
   const launchRef = useRef<() => void>(() => {});
 
   // Kept in refs so a re-render never tears down a live session.
   useEffect(() => {
     heardRef.current = onHeard;
+    sessionEndRef.current = onSessionEnd;
   });
 
   const launch = () => {
@@ -113,6 +129,11 @@ export function useSpeechRecognition({ mode, lang, onHeard }: SpeechOptions): Sp
     recognition.onend = () => {
       recognitionRef.current = null;
       setInterim("");
+      sessionEndRef.current?.({
+        startedAt,
+        durationMs: Date.now() - startedAt,
+        heardAnything,
+      });
       if (!wantsRef.current || mode !== "continuous") {
         wantsRef.current = false;
         setStatus((current) => (current === "denied" || current === "error" ? current : "idle"));
