@@ -17,6 +17,17 @@ const STAGE_COMMANDS: Record<View["kind"], readonly VoiceCommand[]> = {
   studyComplete: [],
 };
 
+// What "next" means depends on where the player is standing. Pulled out as a plain function
+// because routing it to `advance` everywhere is how the round boundary quietly stopped working:
+// `advance` treats a finished round as somewhere to arrive at, not somewhere to leave.
+export type NextIntent = "spin" | "nextRound" | "advance";
+
+export function nextIntentFor(stage: View["kind"]): NextIntent {
+  if (stage === "carousel") return "spin";
+  if (stage === "roundComplete") return "nextRound";
+  return "advance";
+}
+
 // While a "did you say…" prompt is open, answering it takes priority. "Repeat" is the way to
 // wave the prompt away and just say the country again.
 const PROMPT_COMMANDS: readonly VoiceCommand[] = ["yes", "no", "repeat", "skip", "giveUp"];
@@ -29,6 +40,7 @@ export interface VoicePending {
 
 export interface VoiceActions {
   spin: () => void;
+  nextRound: () => void;
   guess: (country: Country) => void;
   skip: (() => void) | undefined;
   giveUp: () => void;
@@ -97,8 +109,17 @@ export function useVoiceGuessing({ view, actions }: Options): VoiceGuessing {
         actions.spin();
         break;
       case "next":
-        if (stage === "carousel") actions.spin();
-        else actions.advance();
+        switch (nextIntentFor(stage)) {
+          case "spin":
+            actions.spin();
+            break;
+          case "nextRound":
+            actions.nextRound();
+            break;
+          case "advance":
+            actions.advance();
+            break;
+        }
         break;
       case "skip":
         setPending(null);

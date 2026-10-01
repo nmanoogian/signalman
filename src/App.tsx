@@ -39,6 +39,7 @@ export function App() {
     view,
     actions: {
       spin: requestSpin,
+      nextRound: session.startNextRound,
       guess: (country) => {
         session.submitGuess(country.code);
       },
