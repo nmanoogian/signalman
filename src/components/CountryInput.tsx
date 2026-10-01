@@ -8,9 +8,11 @@ const MAX_SUGGESTIONS = 6;
 interface CountryInputProps {
   onSelect: (country: Country) => void;
   shakeToken: number;
+  // Off during voice play, where focusing would raise the keyboard over the flag.
+  takeFocus: boolean;
 }
 
-export function CountryInput({ onSelect, shakeToken }: CountryInputProps) {
+export function CountryInput({ onSelect, shakeToken, takeFocus }: CountryInputProps) {
   const listId = useId();
   const optionId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -28,8 +30,8 @@ export function CountryInput({ onSelect, shakeToken }: CountryInputProps) {
   }
 
   useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+    if (takeFocus) inputRef.current?.focus();
+  }, [takeFocus]);
 
   const updateQuery = useCallback((value: string) => {
     setQuery(value);
@@ -42,10 +44,10 @@ export function CountryInput({ onSelect, shakeToken }: CountryInputProps) {
   const choose = useCallback(
     (country: Country) => {
       setOpen(false);
-      inputRef.current?.focus();
+      if (takeFocus) inputRef.current?.focus();
       onSelect(country);
     },
-    [onSelect],
+    [onSelect, takeFocus],
   );
 
   const handleKeyDown = useCallback(

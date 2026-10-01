@@ -4,8 +4,10 @@ import { Completion } from "./components/Completion";
 import { GuessView } from "./components/GuessView";
 import { Menu } from "./components/Menu";
 import { RoundComplete } from "./components/RoundComplete";
+import { VoiceBar } from "./components/VoiceBar";
 import styles from "./App.module.css";
 import { useSession } from "./game/useSession";
+import { useVoiceGuessing } from "./game/useVoiceGuessing";
 
 export function App() {
   const session = useSession();
@@ -23,6 +25,30 @@ export function App() {
 
   const { view, game, study } = session;
   const inProgress = study !== null || game === null || !game.isUntouched;
+
+  // Bumping the token spins the wheel from outside the Carousel, which is how a heard "spin"
+  // reaches it without the component having to expose a handle.
+  const [spinToken, setSpinToken] = useState(0);
+  const requestSpin = useCallback(() => setSpinToken((token) => token + 1), []);
+
+  const canSkip = study === null;
+  const voice = useVoiceGuessing({
+    view,
+    actions: {
+      spin: requestSpin,
+      guess: (country) => {
+        session.submitGuess(country.code);
+      },
+      skip: canSkip ? session.skip : undefined,
+      giveUp: session.giveUp,
+      advance: session.advance,
+    },
+  });
+
+  const toggleVoice = useCallback(() => {
+    if (voice.active) voice.stop();
+    else voice.start();
+  }, [voice]);
 
   const confirmSwitch = useCallback(
     (message: string, action: () => void) => {
@@ -57,6 +83,7 @@ export function App() {
         ) : (
           <Carousel
             pool={game?.remaining ?? []}
+            spinToken={spinToken}
             onSpinStart={handleSpinStart}
             onLand={handleLand}
           />
@@ -73,6 +100,7 @@ export function App() {
             onSkip={study === null ? session.skip : undefined}
             onGiveUp={session.giveUp}
             onContinue={session.advance}
+            voiceActive={voice.active}
           />
         );
       case "roundComplete":
@@ -123,13 +151,19 @@ export function App() {
         <Menu
           onNewGame={handleNewGame}
           onNewStudySession={handleNewStudySession}
+          onToggleVoice={toggleVoice}
+          voiceActive={voice.active}
+          voiceSupported={voice.supported}
           disabled={spinning}
         />
       </header>
 
       <main className={styles.main}>{renderMain()}</main>
 
-      <footer className={styles.footer}>{renderProgress()}</footer>
+      <footer className={styles.footer}>
+        <VoiceBar voice={voice} stage={view.kind} canSkip={canSkip} />
+        {renderProgress()}
+      </footer>
     </div>
   );
 }

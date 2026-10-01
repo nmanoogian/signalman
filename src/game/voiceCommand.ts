@@ -1,10 +1,13 @@
 import { speechVariants } from "./voiceMatch";
 
-export type VoiceCommand = "skip" | "giveUp" | "next" | "repeat" | "yes" | "no";
+export type VoiceCommand = "spin" | "skip" | "giveUp" | "next" | "repeat" | "yes" | "no";
 
 // Matched as whole phrases rather than fuzzily, so a command can never steal a country name.
 // "Next" would otherwise sit close enough to "Niger" to cause trouble.
 const PHRASES: readonly (readonly [VoiceCommand, readonly string[]])[] = [
+  // "spin" and "spin it" are also heard as "Spain", which is why `allowed` is not optional:
+  // the wheel is the only place these mean anything, and answering is the only place Spain is.
+  ["spin", ["spin", "spin it", "spin the wheel", "hit me", "deal me in"]],
   ["skip", ["skip", "skip it", "skip this", "pass", "another one"]],
   [
     "giveUp",
@@ -37,11 +40,16 @@ const COMMANDS: ReadonlyMap<string, VoiceCommand> = new Map(
   ),
 );
 
-// Check this before matching a country: an utterance that is a command is never an answer.
-export function matchCommand(transcript: string): VoiceCommand | null {
+// Check this before matching a country: in a stage where a command is live, it is never an
+// answer. `allowed` is required rather than defaulted because some phrases double as country
+// names, and the stage is the only thing keeping them apart.
+export function matchCommand(
+  transcript: string,
+  allowed: readonly VoiceCommand[],
+): VoiceCommand | null {
   for (const variant of speechVariants(transcript)) {
     const command = COMMANDS.get(variant);
-    if (command !== undefined) return command;
+    if (command !== undefined && allowed.includes(command)) return command;
   }
   return null;
 }

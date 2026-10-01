@@ -12,9 +12,19 @@ interface GuessViewProps {
   onSkip?: (() => void) | undefined;
   onGiveUp: () => void;
   onContinue: () => void;
+  // Voice play keeps the keyboard down; the answer arrives through the microphone instead.
+  voiceActive: boolean;
 }
 
-export function GuessView({ code, stage, onGuess, onSkip, onGiveUp, onContinue }: GuessViewProps) {
+export function GuessView({
+  code,
+  stage,
+  onGuess,
+  onSkip,
+  onGiveUp,
+  onContinue,
+  voiceActive,
+}: GuessViewProps) {
   const country = COUNTRIES_BY_CODE.get(code);
   const [misses, setMisses] = useState(0);
   const [lastMiss, setLastMiss] = useState<string | null>(null);
@@ -55,7 +65,7 @@ export function GuessView({ code, stage, onGuess, onSkip, onGiveUp, onContinue }
         {stage === "guessing" && (
           <>
             <p className={styles.prompt}>Which country flies this flag?</p>
-            <CountryInput onSelect={handleGuess} shakeToken={misses} />
+            <CountryInput onSelect={handleGuess} shakeToken={misses} takeFocus={!voiceActive} />
             {lastMiss !== null && (
               <p className={styles.miss} key={misses}>
                 Not {lastMiss}. Try again.

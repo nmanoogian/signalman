@@ -54,11 +54,13 @@ function frontSlot(rotationDegrees: number): number {
 
 interface CarouselProps {
   pool: readonly CountryCode[];
+  // Bumped to spin from somewhere other than the button, which is how "spin" gets heard.
+  spinToken: number;
   onSpinStart: () => void;
   onLand: (code: CountryCode) => void;
 }
 
-export function Carousel({ pool, onSpinStart, onLand }: CarouselProps) {
+export function Carousel({ pool, spinToken, onSpinStart, onLand }: CarouselProps) {
   const ring = useMemo(() => buildRing(pool), [pool]);
   const [spinning, setSpinning] = useState(false);
   const [landed, setLanded] = useState(false);
@@ -131,6 +133,16 @@ export function Carousel({ pool, onSpinStart, onLand }: CarouselProps) {
     setSpinning(true);
     onSpinStart();
   }, [onSpinStart, ring.length]);
+
+  // Tracked rather than compared against the initial value, so a change in `spin`'s identity
+  // cannot re-fire a spin the token never asked for.
+  const handledSpin = useRef(spinToken);
+
+  useEffect(() => {
+    if (spinToken === handledSpin.current) return;
+    handledSpin.current = spinToken;
+    spin();
+  }, [spin, spinToken]);
 
   // The wheel only picks out its centre flag once a spin is under way.
   const spotlit = spinning || landed;

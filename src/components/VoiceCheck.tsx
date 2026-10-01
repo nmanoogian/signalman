@@ -5,7 +5,7 @@ import {
   type SpeechMode,
   type SpeechSession,
 } from "../game/useSpeechRecognition";
-import { matchCommand } from "../game/voiceCommand";
+import { matchCommand, type VoiceCommand } from "../game/voiceCommand";
 import { matchSpeech } from "../game/voiceMatch";
 import styles from "./VoiceCheck.module.css";
 
@@ -13,6 +13,17 @@ const MAX_LOG = 40;
 const MAX_SESSIONS = 300;
 // Matches the hook's own definition of a session that never really started.
 const SHORT_SESSION_MS = 500;
+// The diagnostic sits outside the game's stages, so every command is live here. In play the
+// allowed set is narrowed per stage, which is what keeps "spin" from capturing "Spain".
+const EVERY_COMMAND: readonly VoiceCommand[] = [
+  "spin",
+  "skip",
+  "giveUp",
+  "next",
+  "repeat",
+  "yes",
+  "no",
+];
 
 type Tone = "accept" | "confirm" | "none" | "command";
 
@@ -24,9 +35,9 @@ interface Entry {
   tone: Tone;
 }
 
-// Commands are read first, exactly as the game will read them.
+// Commands are read first, exactly as the game reads them.
 function describe(transcript: string): { verdict: string; tone: Tone } {
-  const command = matchCommand(transcript);
+  const command = matchCommand(transcript, EVERY_COMMAND);
   if (command !== null) return { verdict: `command · ${command}`, tone: "command" };
 
   const match = matchSpeech(transcript);

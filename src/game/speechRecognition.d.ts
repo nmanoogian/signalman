@@ -22,18 +22,38 @@ interface SpeechRecognitionErrorEvent extends Event {
   readonly message: string;
 }
 
+interface SpeechRecognitionEventMap {
+  audioend: Event;
+  audiostart: Event;
+  end: Event;
+  error: SpeechRecognitionErrorEvent;
+  nomatch: SpeechRecognitionEvent;
+  result: SpeechRecognitionEvent;
+  soundend: Event;
+  soundstart: Event;
+  speechend: Event;
+  speechstart: Event;
+  start: Event;
+}
+
 interface SpeechRecognition extends EventTarget {
   continuous: boolean;
   interimResults: boolean;
   lang: string;
   maxAlternatives: number;
-  onend: ((this: SpeechRecognition, event: Event) => void) | null;
-  onerror: ((this: SpeechRecognition, event: SpeechRecognitionErrorEvent) => void) | null;
-  onresult: ((this: SpeechRecognition, event: SpeechRecognitionEvent) => void) | null;
-  onstart: ((this: SpeechRecognition, event: Event) => void) | null;
   abort(): void;
   start(): void;
   stop(): void;
+  addEventListener<K extends keyof SpeechRecognitionEventMap>(
+    type: K,
+    listener: (this: SpeechRecognition, event: SpeechRecognitionEventMap[K]) => void,
+    options?: boolean | AddEventListenerOptions,
+  ): void;
+  removeEventListener<K extends keyof SpeechRecognitionEventMap>(
+    type: K,
+    listener: (this: SpeechRecognition, event: SpeechRecognitionEventMap[K]) => void,
+    options?: boolean | EventListenerOptions,
+  ): void;
 }
 
 type SpeechRecognitionConstructor = new () => SpeechRecognition;

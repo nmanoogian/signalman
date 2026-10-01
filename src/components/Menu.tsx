@@ -4,10 +4,20 @@ import styles from "./Menu.module.css";
 interface MenuProps {
   onNewGame: () => void;
   onNewStudySession: () => void;
+  onToggleVoice: () => void;
+  voiceActive: boolean;
+  voiceSupported: boolean;
   disabled: boolean;
 }
 
-export function Menu({ onNewGame, onNewStudySession, disabled }: MenuProps) {
+export function Menu({
+  onNewGame,
+  onNewStudySession,
+  onToggleVoice,
+  voiceActive,
+  voiceSupported,
+  disabled,
+}: MenuProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -67,6 +77,20 @@ export function Menu({ onNewGame, onNewStudySession, disabled }: MenuProps) {
             onClick={() => choose(onNewStudySession)}
           >
             New Study Session
+          </button>
+          <button
+            type="button"
+            role="menuitem"
+            className={styles.item}
+            // Opening the microphone needs a gesture, and this tap is it.
+            onClick={() => choose(onToggleVoice)}
+            disabled={!voiceSupported}
+          >
+            {voiceSupported
+              ? voiceActive
+                ? "Turn Off Voice"
+                : "Play by Voice"
+              : "Voice Not Supported"}
           </button>
         </div>
       )}

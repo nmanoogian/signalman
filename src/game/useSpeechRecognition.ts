@@ -69,6 +69,9 @@ export function useSpeechRecognition({
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const wantsRef = useRef(false);
   const emptyRestartsRef = useRef(0);
+  const degradedRef = useRef(false);
+  // The mode the live session was built with, so a re-render cannot restart it for nothing.
+  const activeModeRef = useRef(mode);
   const timerRef = useRef(0);
   const heardRef = useRef(onHeard);
   const sessionEndRef = useRef(onSessionEnd);
@@ -85,6 +88,7 @@ export function useSpeechRecognition({
     if (Recognition === null) return;
 
     const recognition = new Recognition();
+    activeModeRef.current = mode;
     recognition.continuous = mode === "continuous";
     recognition.interimResults = true;
     recognition.lang = lang;
@@ -93,11 +97,11 @@ export function useSpeechRecognition({
     const startedAt = Date.now();
     let heardAnything = false;
 
-    recognition.onstart = () => {
+    recognition.addEventListener("start", () => {
       setStatus("listening");
-    };
+    });
 
-    recognition.onresult = (event) => {
+    recognition.addEventListener("result", (event) => {
       let partial = "";
       for (let index = event.resultIndex; index < event.results.length; index++) {
         const result = event.results[index];
@@ -112,9 +116,9 @@ export function useSpeechRecognition({
       }
       setInterim(partial);
       if (partial !== "") heardRef.current({ transcript: partial, isFinal: false });
-    };
+    });
 
-    recognition.onerror = (event) => {
+    recognition.addEventListener("error", (event) => {
       // Silence and our own `abort()` are ordinary; `onend` decides what happens next.
       if (event.error === "aborted" || event.error === "no-speech") return;
       setError(event.error);
@@ -124,9 +128,9 @@ export function useSpeechRecognition({
       } else {
         setStatus("error");
       }
-    };
+    });
 
-    recognition.onend = () => {
+    recognition.addEventListener("end", () => {
       recognitionRef.current = null;
       setInterim("");
       sessionEndRef.current?.({
@@ -134,7 +138,7 @@ export function useSpeechRecognition({
         durationMs: Date.now() - startedAt,
         heardAnything,
       });
-      if (!wantsRef.current || mode !== "continuous") {
+      if (!wantsRef.current || mode !== "continuous" || degradedRef.current) {
         wantsRef.current = false;
         setStatus((current) => (current === "denied" || current === "error" ? current : "idle"));
         return;
@@ -147,12 +151,13 @@ export function useSpeechRecognition({
       }
       if (emptyRestartsRef.current >= MAX_EMPTY_RESTARTS) {
         wantsRef.current = false;
+        degradedRef.current = true;
         setDegraded(true);
         setStatus("idle");
         return;
       }
       timerRef.current = window.setTimeout(() => launchRef.current(), RESTART_DELAY_MS);
-    };
+    });
 
     recognitionRef.current = recognition;
     try {
@@ -186,7 +191,7 @@ export function useSpeechRecognition({
 
   // A mode change mid-session needs a fresh recognizer, since `continuous` is read at start.
   useEffect(() => {
-    if (!wantsRef.current) return;
+    if (!wantsRef.current || activeModeRef.current === mode) return;
     window.clearTimeout(timerRef.current);
     const recognition = recognitionRef.current;
     recognitionRef.current = null;
