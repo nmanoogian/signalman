@@ -9,6 +9,9 @@ expands so you can name it. Guesses come from the autocomplete, so spelling is n
 problem. A correct guess retires the flag from the pool; **Skip** puts it back on the wheel
 and **Give Up** reveals the answer and retires it.
 
+**Fast Mode** in the menu (games only) shortens the spin and spins the wheel on its own each
+time you finish with a flag.
+
 ## Study Mode
 
 The menu offers **New Game** and **New Study Session**. Study Mode drills a growing set

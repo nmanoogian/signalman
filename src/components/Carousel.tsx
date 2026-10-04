@@ -10,6 +10,9 @@ const MIN_SPIN_TURNS = 5;
 const LANDING_PAUSE_MS = 650;
 const REDUCED_SPIN_DURATION_MS = 700;
 const REDUCED_SPIN_TURNS = 1;
+const FAST_SPIN_DURATION_MS = 1300;
+const FAST_SPIN_TURNS = 2;
+const FAST_LANDING_PAUSE_MS = 300;
 
 function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -20,9 +23,20 @@ const FRONT_CLASS = styles.front ?? "";
 interface Spin {
   startedAt: number;
   duration: number;
+  landingPause: number;
   from: number;
   to: number;
   slot: number;
+}
+
+function spinProfile(fast: boolean) {
+  const landingPause = fast ? FAST_LANDING_PAUSE_MS : LANDING_PAUSE_MS;
+  if (prefersReducedMotion()) {
+    return { duration: REDUCED_SPIN_DURATION_MS, turns: REDUCED_SPIN_TURNS, landingPause };
+  }
+  return fast
+    ? { duration: FAST_SPIN_DURATION_MS, turns: FAST_SPIN_TURNS, landingPause }
+    : { duration: SPIN_DURATION_MS, turns: MIN_SPIN_TURNS, landingPause };
 }
 
 function shuffle<T>(items: readonly T[]): T[] {
@@ -56,11 +70,20 @@ interface CarouselProps {
   pool: readonly CountryCode[];
   // Bumped to spin from somewhere other than the button, which is how "spin" gets heard.
   spinToken: number;
+  fast: boolean;
+  spinOnMount: boolean;
   onSpinStart: () => void;
   onLand: (code: CountryCode) => void;
 }
 
-export function Carousel({ pool, spinToken, onSpinStart, onLand }: CarouselProps) {
+export function Carousel({
+  pool,
+  spinToken,
+  fast,
+  spinOnMount,
+  onSpinStart,
+  onLand,
+}: CarouselProps) {
   const ring = useMemo(() => buildRing(pool), [pool]);
   const [spinning, setSpinning] = useState(false);
   const [landed, setLanded] = useState(false);
@@ -97,7 +120,7 @@ export function Carousel({ pool, spinToken, onSpinStart, onLand }: CarouselProps
           const code = ring[spin.slot] as CountryCode;
           setSpinning(false);
           setLanded(true);
-          handoff = window.setTimeout(() => onLandRef.current(code), LANDING_PAUSE_MS);
+          handoff = window.setTimeout(() => onLandRef.current(code), spin.landingPause);
         }
       } else if (!frozenRef.current && !prefersReducedMotion()) {
         rotationRef.current -= (IDLE_DEGREES_PER_SECOND * elapsed) / 1000;
@@ -122,17 +145,25 @@ export function Carousel({ pool, spinToken, onSpinStart, onLand }: CarouselProps
 
   const spin = useCallback(() => {
     if (spinRef.current || frozenRef.current || ring.length === 0) return;
-    const reduced = prefersReducedMotion();
+    const { duration, turns, landingPause } = spinProfile(fast);
     const slot = Math.floor(Math.random() * ring.length);
     const from = rotationRef.current;
-    const turns = reduced ? REDUCED_SPIN_TURNS : MIN_SPIN_TURNS;
     let to = -slot * STEP_DEGREES;
     while (to > from - turns * 360) to -= 360;
-    const duration = reduced ? REDUCED_SPIN_DURATION_MS : SPIN_DURATION_MS;
-    spinRef.current = { startedAt: performance.now(), duration, from, to, slot };
+    spinRef.current = { startedAt: performance.now(), duration, landingPause, from, to, slot };
     setSpinning(true);
     onSpinStart();
-  }, [onSpinStart, ring.length]);
+  }, [fast, onSpinStart, ring.length]);
+
+  // Only the first render's request counts, so a later change in `spin`'s identity cannot
+  // start a second spin.
+  const handledMountSpin = useRef(!spinOnMount);
+
+  useEffect(() => {
+    if (handledMountSpin.current) return;
+    handledMountSpin.current = true;
+    spin();
+  }, [spin]);
 
   // Tracked rather than compared against the initial value, so a change in `spin`'s identity
   // cannot re-fire a spin the token never asked for.

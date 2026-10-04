@@ -19,9 +19,10 @@ const ALL_CODES: readonly CountryCode[] = COUNTRIES.map((country) => country.cod
 const FRESH_GAME: GameProgress = { remaining: ALL_CODES, gaveUp: [] };
 
 // `seq` counts flag presentations so the guess view remounts for each new prompt, even when
-// the same flag comes round again.
+// the same flag comes round again. `afterFlag` marks a return to the wheel from a flag, as
+// opposed to arriving at it fresh, which is when Fast Mode spins on its own.
 export type View =
-  | { kind: "carousel" }
+  | { kind: "carousel"; afterFlag: boolean }
   | { kind: "guessing"; code: CountryCode; seq: number }
   | { kind: "correct"; code: CountryCode; seq: number }
   | { kind: "revealed"; code: CountryCode; seq: number }
@@ -29,7 +30,7 @@ export type View =
   | { kind: "studyComplete" };
 
 function startingView(session: Session): View {
-  if (session.mode === "game") return { kind: "carousel" };
+  if (session.mode === "game") return { kind: "carousel", afterFlag: false };
   const { current } = session.study;
   if (current !== null) return { kind: "guessing", code: current, seq: 0 };
   return hasUnintroduced(session.study) ? { kind: "roundComplete" } : { kind: "studyComplete" };
@@ -90,7 +91,7 @@ export function useSession() {
   );
 
   const skip = useCallback(() => {
-    setView({ kind: "carousel" });
+    setView({ kind: "carousel", afterFlag: true });
   }, []);
 
   const giveUp = useCallback(() => {
@@ -113,7 +114,7 @@ export function useSession() {
   // next flag (or the round boundary) when studying.
   const advance = useCallback(() => {
     if (study === null) {
-      setView({ kind: "carousel" });
+      setView({ kind: "carousel", afterFlag: true });
       return;
     }
     if (isRoundComplete(study)) {
@@ -140,7 +141,7 @@ export function useSession() {
 
   const newGame = useCallback(() => {
     setSession({ mode: "game", game: FRESH_GAME });
-    setView({ kind: "carousel" });
+    setView({ kind: "carousel", afterFlag: false });
   }, []);
 
   const newStudySession = useCallback(() => {

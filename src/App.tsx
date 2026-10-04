@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Carousel } from "./components/Carousel";
 import { Completion } from "./components/Completion";
 import { GuessView } from "./components/GuessView";
@@ -7,12 +7,21 @@ import { RoundComplete } from "./components/RoundComplete";
 import { VoiceBar } from "./components/VoiceBar";
 import styles from "./App.module.css";
 import { useFlagPreload } from "./game/preloadFlags";
+import { loadFastMode, saveFastMode } from "./game/storage";
 import { useSession } from "./game/useSession";
 import { useVoiceGuessing } from "./game/useVoiceGuessing";
 
 export function App() {
   const session = useSession();
   const [spinning, setSpinning] = useState(false);
+
+  const [fastMode, setFastMode] = useState(loadFastMode);
+
+  useEffect(() => {
+    saveFastMode(fastMode);
+  }, [fastMode]);
+
+  const toggleFastMode = useCallback(() => setFastMode((enabled) => !enabled), []);
 
   const handleSpinStart = useCallback(() => setSpinning(true), []);
 
@@ -88,6 +97,8 @@ export function App() {
           <Carousel
             pool={game?.remaining ?? []}
             spinToken={spinToken}
+            fast={fastMode}
+            spinOnMount={fastMode && view.afterFlag}
             onSpinStart={handleSpinStart}
             onLand={handleLand}
           />
@@ -158,6 +169,8 @@ export function App() {
           onToggleVoice={toggleVoice}
           voiceActive={voice.active}
           voiceSupported={voice.supported}
+          onToggleFastMode={game === null ? undefined : toggleFastMode}
+          fastMode={fastMode}
           disabled={spinning}
         />
       </header>

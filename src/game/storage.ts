@@ -2,6 +2,7 @@ import { COUNTRIES_BY_CODE, type CountryCode } from "../data/countries";
 import type { StudyProgress } from "./study";
 
 const STORAGE_KEY = "signalman:session:v1";
+const FAST_MODE_KEY = "signalman:fastMode:v1";
 
 export interface GameProgress {
   remaining: readonly CountryCode[];
@@ -81,5 +82,21 @@ export function saveSession(session: Session): void {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
   } catch {
     // Storage can be unavailable or full; play continues, it just will not resume.
+  }
+}
+
+export function loadFastMode(): boolean {
+  try {
+    return localStorage.getItem(FAST_MODE_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+export function saveFastMode(enabled: boolean): void {
+  try {
+    localStorage.setItem(FAST_MODE_KEY, String(enabled));
+  } catch {
+    // Storage can be unavailable; the setting just will not survive a reload.
   }
 }

@@ -7,6 +7,9 @@ interface MenuProps {
   onToggleVoice: () => void;
   voiceActive: boolean;
   voiceSupported: boolean;
+  // Absent outside a game, where there is no wheel for the setting to speed up.
+  onToggleFastMode?: (() => void) | undefined;
+  fastMode: boolean;
   disabled: boolean;
 }
 
@@ -16,6 +19,8 @@ export function Menu({
   onToggleVoice,
   voiceActive,
   voiceSupported,
+  onToggleFastMode,
+  fastMode,
   disabled,
 }: MenuProps) {
   const [open, setOpen] = useState(false);
@@ -92,6 +97,17 @@ export function Menu({
                 : "Play by Voice"
               : "Voice Not Supported"}
           </button>
+          {onToggleFastMode && (
+            <button
+              type="button"
+              role="menuitemcheckbox"
+              aria-checked={fastMode}
+              className={styles.item}
+              onClick={() => choose(onToggleFastMode)}
+            >
+              Fast Mode: {fastMode ? "On" : "Off"}
+            </button>
+          )}
         </div>
       )}
     </div>
