@@ -21,6 +21,7 @@ const INDEX: readonly IndexedCountry[] = COUNTRIES.map((country) => ({
   terms: [country.name, ...(country.aliases ?? [])].map(normalize),
 }));
 
+const EXACT_CODE = -1;
 const PREFIX = 0;
 const WORD_START = 1;
 const SUBSTRING = 2;
@@ -33,11 +34,15 @@ function rankTerm(term: string, query: string): number {
   return term[at - 1] === " " ? WORD_START : SUBSTRING;
 }
 
+// An alias match never outranks a match on the country's own name.
+const ALIAS_PENALTY = 0.5;
+
 function rank(entry: IndexedCountry, query: string): number {
+  // Codes match only in full, so a single letter doesn't pull in every code that starts with it.
+  if (query === entry.country.code) return EXACT_CODE;
   let best = NO_MATCH;
   for (const [termIndex, term] of entry.terms.entries()) {
-    // An alias match never outranks a match on the country's own name.
-    const penalty = termIndex === 0 ? 0 : 0.5;
+    const penalty = termIndex === 0 ? 0 : ALIAS_PENALTY;
     best = Math.min(best, rankTerm(term, query) + penalty);
   }
   return best;

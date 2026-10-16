@@ -118,6 +118,9 @@ export function CountryInput({ onSelect, shakeToken, takeFocus }: CountryInputPr
               onClick={() => choose(country)}
             >
               {country.name}
+              <span className={styles.code} aria-hidden="true">
+                {country.code.toUpperCase()}
+              </span>
             </li>
           ))}
         </ul>

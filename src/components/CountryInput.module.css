@@ -44,6 +44,10 @@
 }
 
 .option {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
   padding: 11px 14px;
   border-radius: 9px;
   cursor: pointer;
@@ -54,6 +58,15 @@
   background: var(--cyan);
   color: #04222b;
   font-weight: 600;
+}
+
+/* Opacity rather than a fixed color so the code stays muted on the highlighted row too. */
+.code {
+  flex-shrink: 0;
+  opacity: 0.6;
+  font-size: 0.85em;
+  font-weight: 400;
+  letter-spacing: 0.04em;
 }
 
 @media (max-width: 560px) {
