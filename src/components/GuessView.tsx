@@ -1,9 +1,42 @@
 import { useEffect, useRef, useState } from "react";
 import { COUNTRIES_BY_CODE, flagUrl, type Country, type CountryCode } from "../data/countries";
+import { COUNTRY_FACTS, type CountryFacts } from "../data/countryFacts";
 import { CountryInput } from "./CountryInput";
 import styles from "./GuessView.module.css";
 
 const SUCCESS_DURATION_MS = 1800;
+
+const exactPopulation = new Intl.NumberFormat("en");
+const largePopulation = new Intl.NumberFormat("en", {
+  notation: "compact",
+  compactDisplay: "long",
+  maximumSignificantDigits: 3,
+});
+
+function formatPopulation(population: number): string {
+  if (population === 0) return "None permanent";
+  return (population < 1_000_000 ? exactPopulation : largePopulation).format(population);
+}
+
+function Facts({ facts }: { facts: CountryFacts | undefined }) {
+  if (facts?.callingCode === undefined && facts?.population === undefined) return null;
+  return (
+    <dl className={styles.facts}>
+      {facts.callingCode !== undefined && (
+        <div className={styles.fact}>
+          <dt>Calling code</dt>
+          <dd>+{facts.callingCode}</dd>
+        </div>
+      )}
+      {facts.population !== undefined && (
+        <div className={styles.fact}>
+          <dt>Population</dt>
+          <dd>{formatPopulation(facts.population)}</dd>
+        </div>
+      )}
+    </dl>
+  );
+}
 
 interface GuessViewProps {
   code: CountryCode;
@@ -88,6 +121,7 @@ export function GuessView({
           <>
             <p className={styles.verdictCorrect}>Correct</p>
             <p className={styles.answer}>{country?.name}</p>
+            <Facts facts={COUNTRY_FACTS.get(code)} />
           </>
         )}
 
