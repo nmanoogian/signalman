@@ -120,7 +120,9 @@ export function GuessView({
         {stage === "correct" && (
           <>
             <p className={styles.verdictCorrect}>Correct</p>
-            <p className={styles.answer}>{country?.name}</p>
+            <p className={styles.answer}>
+              {country?.name} <span className={styles.answerCode}>{code.toUpperCase()}</span>
+            </p>
             <Facts facts={COUNTRY_FACTS.get(code)} />
           </>
         )}
