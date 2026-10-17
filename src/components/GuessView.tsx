@@ -97,7 +97,7 @@ export function GuessView({
       <div className={styles.panel} aria-live="polite">
         {stage === "guessing" && (
           <>
-            <p className={styles.prompt}>Which country flies this flag?</p>
+            <p className={styles.prompt}>Who flies this flag?</p>
             <CountryInput onSelect={handleGuess} shakeToken={misses} takeFocus={!voiceActive} />
             {lastMiss !== null && (
               <p className={styles.miss} key={misses}>
