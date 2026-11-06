@@ -3,8 +3,8 @@
 export const REVEAL_DURATION_MS = 30_000;
 
 // As a fraction of the flag's rendered width, so a phone and a desktop start equally lost.
-// At 560px wide this is a 45px blur — enough that only the broad colour fields survive.
-export const MAX_BLUR_FRACTION = 0.08;
+// At 560px wide this is an 84px blur — most flags open as a single blended colour.
+export const MAX_BLUR_FRACTION = 0.15;
 
 // How far through the reveal `elapsedMs` is, from 0 to 1.
 export function revealProgress(elapsedMs: number, durationMs = REVEAL_DURATION_MS): number {

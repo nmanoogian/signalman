@@ -34,7 +34,7 @@
 /* --reveal-blur is written every frame by useBlurReveal. The fallback keeps the very first
    paint blurred even if the hook has not measured the flag yet. */
 .blurred {
-  filter: blur(var(--reveal-blur, 45px));
+  filter: blur(var(--reveal-blur, 84px));
 }
 
 .unblurred {
