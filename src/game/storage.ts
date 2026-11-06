@@ -3,6 +3,7 @@ import type { StudyProgress } from "./study";
 
 const STORAGE_KEY = "signalman:session:v1";
 const FAST_MODE_KEY = "signalman:fastMode:v1";
+const TILE_REVEAL_KEY = "signalman:tileReveal:v1";
 
 export interface GameProgress {
   remaining: readonly CountryCode[];
@@ -96,6 +97,22 @@ export function loadFastMode(): boolean {
 export function saveFastMode(enabled: boolean): void {
   try {
     localStorage.setItem(FAST_MODE_KEY, String(enabled));
+  } catch {
+    // Storage can be unavailable; the setting just will not survive a reload.
+  }
+}
+
+export function loadTileReveal(): boolean {
+  try {
+    return localStorage.getItem(TILE_REVEAL_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+export function saveTileReveal(enabled: boolean): void {
+  try {
+    localStorage.setItem(TILE_REVEAL_KEY, String(enabled));
   } catch {
     // Storage can be unavailable; the setting just will not survive a reload.
   }

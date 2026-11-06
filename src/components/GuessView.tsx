@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { COUNTRIES_BY_CODE, flagUrl, type Country, type CountryCode } from "../data/countries";
 import { COUNTRY_FACTS, type CountryFacts } from "../data/countryFacts";
+import { TILE_COUNT } from "../game/tileReveal";
+import { useTileReveal, type TileReveal } from "../game/useTileReveal";
 import { CountryInput } from "./CountryInput";
 import styles from "./GuessView.module.css";
 
@@ -38,6 +40,36 @@ function Facts({ facts }: { facts: CountryFacts | undefined }) {
   );
 }
 
+// Lifted tiles are tracked by rank — the step at which each one lifts — so the grid can be
+// drawn in reading order while lifting in a shuffled one.
+function Tiles({ reveal, live }: { reveal: TileReveal; live: boolean }) {
+  const rank: number[] = [];
+  reveal.order.forEach((tile, step) => {
+    rank[tile] = step;
+  });
+  return (
+    <div className={styles.tiles} aria-hidden="true">
+      {rank.map((step, tile) => {
+        const lifted = !live || step < reveal.shown;
+        return (
+          <div
+            // A tile's identity is its grid position.
+            // oxlint-disable-next-line react/no-array-index-key
+            key={tile}
+            className={`${styles.tile} ${lifted ? styles.tileLifted : ""}`}
+            // Once the flag is answered, the tiles still down sweep away in their own order.
+            style={live ? undefined : { transitionDelay: `${(step - reveal.shown) * 22}ms` }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+function tileCount(shown: number): string {
+  return `${shown} of ${TILE_COUNT} ${TILE_COUNT === 1 ? "tile" : "tiles"}`;
+}
+
 interface GuessViewProps {
   code: CountryCode;
   stage: "guessing" | "correct" | "revealed";
@@ -47,6 +79,8 @@ interface GuessViewProps {
   onContinue: () => void;
   // Voice play keeps the keyboard down; the answer arrives through the microphone instead.
   voiceActive: boolean;
+  // Tile Reveal: the flag starts covered and uncovers tile by tile until the player pauses.
+  tileReveal: boolean;
 }
 
 export function GuessView({
@@ -57,10 +91,23 @@ export function GuessView({
   onGiveUp,
   onContinue,
   voiceActive,
+  tileReveal,
 }: GuessViewProps) {
   const country = COUNTRIES_BY_CODE.get(code);
   const [misses, setMisses] = useState(0);
   const [lastMiss, setLastMiss] = useState<string | null>(null);
+
+  const live = stage === "guessing";
+  const reveal = useTileReveal({ enabled: tileReveal, live });
+  // Until the player pauses, there is nothing to type into: the point is to commit early.
+  const awaitingPause = tileReveal && !reveal.paused;
+
+  // Focused so a keyboard player can pause with Enter or Space straight away. Voice play has
+  // no use for focus, the same as CountryInput.
+  const pauseRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (awaitingPause && live && !voiceActive) pauseRef.current?.focus();
+  }, [awaitingPause, live, voiceActive]);
 
   const onContinueRef = useRef(onContinue);
 
@@ -87,17 +134,43 @@ export function GuessView({
           <div
             className={`${styles.flagFrame} ${stage === "correct" ? styles.frameCorrect : ""} ${
               lastMiss === null ? "" : styles.frameMissed
-            }`}
+            } ${tileReveal && live ? styles.frameCovered : ""}`}
           >
             <img className={styles.flag} src={flagUrl(code)} alt="Flag of an unnamed country" />
+            {tileReveal && <Tiles reveal={reveal} live={live} />}
           </div>
         </div>
       </div>
 
       <div className={styles.panel} aria-live="polite">
-        {stage === "guessing" && (
+        {live && awaitingPause && (
           <>
-            <p className={styles.prompt}>Who flies this flag?</p>
+            <p className={styles.prompt}>Pause the moment you know it</p>
+            <button type="button" className={styles.primary} onClick={reveal.pause} ref={pauseRef}>
+              Pause &amp; Guess
+            </button>
+            <div className={styles.actions}>
+              {onSkip && (
+                <button type="button" className={styles.secondary} onClick={onSkip}>
+                  Skip
+                </button>
+              )}
+              <button type="button" className={styles.secondary} onClick={onGiveUp}>
+                Give Up
+              </button>
+            </div>
+          </>
+        )}
+
+        {live && !awaitingPause && (
+          <>
+            <p className={styles.prompt}>
+              {tileReveal
+                ? reveal.finished
+                  ? "Fully uncovered. Who flies this flag?"
+                  : `Paused at ${tileCount(reveal.shown)}. Who flies this flag?`
+                : "Who flies this flag?"}
+            </p>
             <CountryInput onSelect={handleGuess} shakeToken={misses} takeFocus={!voiceActive} />
             {lastMiss !== null && (
               <p className={styles.miss} key={misses}>
@@ -105,6 +178,11 @@ export function GuessView({
               </p>
             )}
             <div className={styles.actions}>
+              {tileReveal && !reveal.finished && (
+                <button type="button" className={styles.secondary} onClick={reveal.resume}>
+                  Resume
+                </button>
+              )}
               {onSkip && (
                 <button type="button" className={styles.secondary} onClick={onSkip}>
                   Skip
@@ -123,6 +201,7 @@ export function GuessView({
             <p className={styles.answer}>
               {country?.name} <span className={styles.answerCode}>{code.toUpperCase()}</span>
             </p>
+            {tileReveal && <p className={styles.revealStat}>Named at {tileCount(reveal.shown)}</p>}
             <Facts facts={COUNTRY_FACTS.get(code)} />
           </>
         )}

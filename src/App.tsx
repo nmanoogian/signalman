@@ -7,7 +7,7 @@ import { RoundComplete } from "./components/RoundComplete";
 import { VoiceBar } from "./components/VoiceBar";
 import styles from "./App.module.css";
 import { useFlagPreload } from "./game/preloadFlags";
-import { loadFastMode, saveFastMode } from "./game/storage";
+import { loadFastMode, loadTileReveal, saveFastMode, saveTileReveal } from "./game/storage";
 import { useSession } from "./game/useSession";
 import { useVoiceGuessing } from "./game/useVoiceGuessing";
 
@@ -22,6 +22,14 @@ export function App() {
   }, [fastMode]);
 
   const toggleFastMode = useCallback(() => setFastMode((enabled) => !enabled), []);
+
+  const [tileReveal, setTileReveal] = useState(loadTileReveal);
+
+  useEffect(() => {
+    saveTileReveal(tileReveal);
+  }, [tileReveal]);
+
+  const toggleTileReveal = useCallback(() => setTileReveal((enabled) => !enabled), []);
 
   const handleSpinStart = useCallback(() => setSpinning(true), []);
 
@@ -99,6 +107,7 @@ export function App() {
             spinToken={spinToken}
             fast={fastMode}
             spinOnMount={fastMode && view.afterFlag}
+            covered={tileReveal}
             onSpinStart={handleSpinStart}
             onLand={handleLand}
           />
@@ -116,6 +125,7 @@ export function App() {
             onGiveUp={session.giveUp}
             onContinue={session.advance}
             voiceActive={voice.active}
+            tileReveal={tileReveal}
           />
         );
       case "roundComplete":
@@ -171,6 +181,8 @@ export function App() {
           voiceSupported={voice.supported}
           onToggleFastMode={game === null ? undefined : toggleFastMode}
           fastMode={fastMode}
+          onToggleTileReveal={toggleTileReveal}
+          tileReveal={tileReveal}
           disabled={spinning}
         />
       </header>

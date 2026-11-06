@@ -12,6 +12,13 @@ and **Give Up** reveals the answer and retires it.
 **Fast Mode** in the menu (games only) shortens the spin and spins the wheel on its own each
 time you finish with a flag.
 
+**Tile Reveal** in the menu (games and study) hides each flag under a 6×4 grid of tiles that
+lift one at a time, in a random order, until the whole flag shows at 30 seconds. The wheel's
+cards are face down too, since the answer is always one of its flags. There is nothing to
+type into until you hit **Pause & Guess**, which stops the tiles; **Resume** sets them lifting
+again if you are not sure after all. A correct answer shows how many tiles you needed. With
+voice play on, a spoken answer counts at any point, paused or not.
+
 ## Study Mode
 
 The menu offers **New Game** and **New Study Session**. Study Mode drills a growing set
