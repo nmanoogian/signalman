@@ -44,7 +44,9 @@
   margin: auto;
   display: grid;
   grid-template: repeat(4, 1fr) / repeat(6, 1fr);
-  border-radius: 6px;
+  /* Square on purpose. The image's border-radius rounds its element box, not the letterboxed
+     picture inside it, so the flag's own corners are square and a rounded grid would leave a
+     pixel of flag showing at each one. */
   overflow: hidden;
   pointer-events: none;
 }
