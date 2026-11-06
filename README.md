@@ -13,10 +13,11 @@ and **Give Up** reveals the answer and retires it.
 time you finish with a flag.
 
 **Blur Reveal** in the menu (games and study) shows each flag heavily blurred and sharpens it
-over 30 seconds. There is nothing to type into until you hit **Pause & Guess**, which
-freezes the blur where it is; **Resume** sets it sharpening again if you are not sure after
-all. A correct answer shows how far into the reveal you named it. With voice play on, a
-spoken answer counts at any point, paused or not.
+over 30 seconds. The wheel is blurred too, since the answer is always one of its flags.
+There is nothing to type into until you hit **Pause & Guess**, which freezes the blur where
+it is; **Resume** sets it sharpening again if you are not sure after all. A correct answer
+shows how far into the reveal you named it. With voice play on, a spoken answer counts at any
+point, paused or not.
 
 ## Study Mode
 

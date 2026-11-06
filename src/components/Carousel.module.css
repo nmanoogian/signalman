@@ -63,6 +63,13 @@
   user-select: none;
 }
 
+/* The same fraction of the flag's width that the guess view's reveal starts from, so the
+   landed flag hands over without a jump. On the image, not the item, which already carries the
+   spotlight filters. */
+.blurred .flag {
+  filter: blur(calc(var(--flag-width) * var(--blur-fraction)));
+}
+
 .spinButton {
   min-width: 190px;
   padding: 16px 40px;

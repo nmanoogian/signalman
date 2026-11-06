@@ -107,6 +107,7 @@ export function App() {
             spinToken={spinToken}
             fast={fastMode}
             spinOnMount={fastMode && view.afterFlag}
+            blurred={blurReveal}
             onSpinStart={handleSpinStart}
             onLand={handleLand}
           />

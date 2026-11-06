@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { flagUrl, type CountryCode } from "../data/countries";
+import { MAX_BLUR_FRACTION } from "../game/reveal";
 import styles from "./Carousel.module.css";
 
 const RING_SIZE = 18;
@@ -72,6 +73,9 @@ interface CarouselProps {
   spinToken: number;
   fast: boolean;
   spinOnMount: boolean;
+  // Blur Reveal: every flag on the wheel is drawn at the reveal's starting blur. Blurring
+  // only the winner is not enough, because the answer is always one of the flags on the ring.
+  blurred: boolean;
   onSpinStart: () => void;
   onLand: (code: CountryCode) => void;
 }
@@ -81,6 +85,7 @@ export function Carousel({
   spinToken,
   fast,
   spinOnMount,
+  blurred,
   onSpinStart,
   onLand,
 }: CarouselProps) {
@@ -179,7 +184,10 @@ export function Carousel({
   const spotlit = spinning || landed;
 
   return (
-    <div className={styles.carousel}>
+    <div
+      className={`${styles.carousel} ${blurred ? styles.blurred : ""}`}
+      style={{ "--blur-fraction": MAX_BLUR_FRACTION } as CSSProperties}
+    >
       <div
         className={`${styles.viewport} ${spotlit ? styles.spotlight : ""} ${
           landed ? styles.viewportLanded : ""
