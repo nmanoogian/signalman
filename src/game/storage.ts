@@ -3,6 +3,7 @@ import type { StudyProgress } from "./study";
 
 const STORAGE_KEY = "signalman:session:v1";
 const FAST_MODE_KEY = "signalman:fastMode:v1";
+const BLUR_REVEAL_KEY = "signalman:blurReveal:v1";
 
 export interface GameProgress {
   remaining: readonly CountryCode[];
@@ -96,6 +97,22 @@ export function loadFastMode(): boolean {
 export function saveFastMode(enabled: boolean): void {
   try {
     localStorage.setItem(FAST_MODE_KEY, String(enabled));
+  } catch {
+    // Storage can be unavailable; the setting just will not survive a reload.
+  }
+}
+
+export function loadBlurReveal(): boolean {
+  try {
+    return localStorage.getItem(BLUR_REVEAL_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+export function saveBlurReveal(enabled: boolean): void {
+  try {
+    localStorage.setItem(BLUR_REVEAL_KEY, String(enabled));
   } catch {
     // Storage can be unavailable; the setting just will not survive a reload.
   }

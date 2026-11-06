@@ -31,6 +31,47 @@
   transition: filter 240ms ease;
 }
 
+/* --reveal-blur is written every frame by useBlurReveal. The fallback keeps the very first
+   paint blurred even if the hook has not measured the flag yet. */
+.blurred {
+  filter: blur(var(--reveal-blur, 45px));
+}
+
+.unblurred {
+  filter: blur(0);
+  transition: filter 600ms ease-out;
+}
+
+.revealTrack {
+  width: min(320px, 70vw);
+  height: 4px;
+  margin-top: calc(clamp(18px, 4vh, 34px) * -0.5);
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.revealFill {
+  height: 100%;
+  background: var(--cyan);
+  transform: scaleX(var(--reveal-progress, 0));
+  transform-origin: left;
+}
+
+/* Inside the uppercase prompt, where "9.0S" would read as a unit it is not. */
+.seconds {
+  text-transform: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.revealTime {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
 .shaker {
   animation: shake 420ms ease;
 }

@@ -7,7 +7,7 @@ import { RoundComplete } from "./components/RoundComplete";
 import { VoiceBar } from "./components/VoiceBar";
 import styles from "./App.module.css";
 import { useFlagPreload } from "./game/preloadFlags";
-import { loadFastMode, saveFastMode } from "./game/storage";
+import { loadBlurReveal, loadFastMode, saveBlurReveal, saveFastMode } from "./game/storage";
 import { useSession } from "./game/useSession";
 import { useVoiceGuessing } from "./game/useVoiceGuessing";
 
@@ -22,6 +22,14 @@ export function App() {
   }, [fastMode]);
 
   const toggleFastMode = useCallback(() => setFastMode((enabled) => !enabled), []);
+
+  const [blurReveal, setBlurReveal] = useState(loadBlurReveal);
+
+  useEffect(() => {
+    saveBlurReveal(blurReveal);
+  }, [blurReveal]);
+
+  const toggleBlurReveal = useCallback(() => setBlurReveal((enabled) => !enabled), []);
 
   const handleSpinStart = useCallback(() => setSpinning(true), []);
 
@@ -116,6 +124,7 @@ export function App() {
             onGiveUp={session.giveUp}
             onContinue={session.advance}
             voiceActive={voice.active}
+            blurReveal={blurReveal}
           />
         );
       case "roundComplete":
@@ -171,6 +180,8 @@ export function App() {
           voiceSupported={voice.supported}
           onToggleFastMode={game === null ? undefined : toggleFastMode}
           fastMode={fastMode}
+          onToggleBlurReveal={toggleBlurReveal}
+          blurReveal={blurReveal}
           disabled={spinning}
         />
       </header>

@@ -12,6 +12,12 @@ and **Give Up** reveals the answer and retires it.
 **Fast Mode** in the menu (games only) shortens the spin and spins the wheel on its own each
 time you finish with a flag.
 
+**Blur Reveal** in the menu (games and study) shows each flag heavily blurred and sharpens it
+over 30 seconds. There is nothing to type into until you hit **Pause & Guess**, which
+freezes the blur where it is; **Resume** sets it sharpening again if you are not sure after
+all. A correct answer shows how far into the reveal you named it. With voice play on, a
+spoken answer counts at any point, paused or not.
+
 ## Study Mode
 
 The menu offers **New Game** and **New Study Session**. Study Mode drills a growing set
