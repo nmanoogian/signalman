@@ -13,6 +13,9 @@
   width: min(560px, 88vw);
   aspect-ratio: 4 / 3;
   max-height: 46vh;
+  /* Lets the tile grid size itself to the flag's own 4:3 box, which is narrower than the frame
+     whenever max-height kicks in and the image letterboxes. */
+  container-type: size;
 }
 
 .entrance {
@@ -29,6 +32,62 @@
   border-radius: 6px;
   filter: var(--flag-lift);
   transition: filter 240ms ease;
+}
+
+/* Every flag is drawn on a 4:3 canvas, so this box sits exactly over the image. The extra
+   pixel each side hides the hairline of flag colour that anti-aliasing leaves at the edges. */
+.tiles {
+  position: absolute;
+  inset: -1px;
+  width: calc(min(100cqw, 100cqh * 4 / 3) + 2px);
+  height: calc(min(100cqh, 100cqw * 3 / 4) + 2px);
+  margin: auto;
+  display: grid;
+  grid-template: repeat(4, 1fr) / repeat(6, 1fr);
+  border-radius: 6px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.tile {
+  background: linear-gradient(145deg, #22325a, var(--surface-raised));
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 7%),
+    inset 0 -3px 0 rgb(0 0 0 / 28%);
+  transition:
+    opacity 380ms ease,
+    transform 380ms cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.tileLifted {
+  opacity: 0;
+  transform: scale(0.4) rotate(8deg);
+}
+
+/* While the tiles are down, the flag's drop-shadow would trace the silhouette of a flag that
+   does not fill its canvas (Nepal), so the shadow and the miss glow move to the grid instead. */
+.frameCovered .flag,
+.frameCovered.frameMissed .flag {
+  filter: none;
+}
+
+.frameCovered .tiles {
+  box-shadow: 0 24px 45px rgb(0 0 0 / 55%);
+}
+
+.frameCovered.frameMissed .tiles {
+  box-shadow:
+    0 0 0 2px rgb(255 85 119 / 90%),
+    0 0 26px rgb(255 85 119 / 70%),
+    0 24px 45px rgb(0 0 0 / 55%);
+}
+
+.revealStat {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
 }
 
 .shaker {
@@ -61,6 +120,8 @@
   font-size: 0.95rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .miss {

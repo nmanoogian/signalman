@@ -63,6 +63,31 @@
   user-select: none;
 }
 
+/* The back of a card: Signalman's S, lettered like the title. */
+.cardBack {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 45%, rgb(69 224 255 / 10%), transparent 65%),
+    linear-gradient(145deg, #1c2a4d, #0d1529);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 8%),
+    inset 0 0 0 7px #0d1529,
+    inset 0 0 0 8px rgb(255 210 63 / 30%),
+    0 10px 30px rgb(0 0 0 / 55%);
+}
+
+.cardMark {
+  font-size: calc(var(--flag-width) * 0.42);
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--accent), var(--cyan));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  user-select: none;
+}
+
 .spinButton {
   min-width: 190px;
   padding: 16px 40px;

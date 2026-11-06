@@ -10,6 +10,8 @@ interface MenuProps {
   // Absent outside a game, where there is no wheel for the setting to speed up.
   onToggleFastMode?: (() => void) | undefined;
   fastMode: boolean;
+  onToggleTileReveal: () => void;
+  tileReveal: boolean;
   disabled: boolean;
 }
 
@@ -21,6 +23,8 @@ export function Menu({
   voiceSupported,
   onToggleFastMode,
   fastMode,
+  onToggleTileReveal,
+  tileReveal,
   disabled,
 }: MenuProps) {
   const [open, setOpen] = useState(false);
@@ -108,6 +112,15 @@ export function Menu({
               Fast Mode: {fastMode ? "On" : "Off"}
             </button>
           )}
+          <button
+            type="button"
+            role="menuitemcheckbox"
+            aria-checked={tileReveal}
+            className={styles.item}
+            onClick={() => choose(onToggleTileReveal)}
+          >
+            Tile Reveal: {tileReveal ? "On" : "Off"}
+          </button>
         </div>
       )}
     </div>
