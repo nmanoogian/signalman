@@ -72,8 +72,8 @@ interface CarouselProps {
   spinToken: number;
   fast: boolean;
   spinOnMount: boolean;
-  // Tile Reveal: every card on the wheel is face down, tiles and all. Covering only the winner
-  // is not enough, because the answer is always one of the flags on the ring.
+  // Tile Reveal: every card on the wheel shows its back. Covering only the winner is not
+  // enough, because the answer is always one of the flags on the ring.
   covered: boolean;
   onSpinStart: () => void;
   onLand: (code: CountryCode) => void;
@@ -202,7 +202,9 @@ export function Carousel({
               style={{ "--slot": slot } as CSSProperties}
             >
               {covered ? (
-                <div className={`${styles.flag} ${styles.covered}`} />
+                <div className={`${styles.flag} ${styles.cardBack}`}>
+                  <span className={styles.cardMark}>S</span>
+                </div>
               ) : (
                 <img className={styles.flag} src={flagUrl(code)} alt="" draggable={false} />
               )}
