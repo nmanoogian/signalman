@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-bf" viewBox="0 0 640 480">
+  <g data-seams="underlay"><g fill-rule="evenodd"><path fill="#de0000" d="M640 479.6H.4V0H640z" stroke="#de0000" stroke-width="8"/><path fill="#35a100" d="M639.6 480H0V240.2h639.6z" stroke="#35a100" stroke-width="8"/></g></g>
   <g fill-rule="evenodd">
     <path fill="#de0000" d="M640 479.6H.4V0H640z"/>
     <path fill="#35a100" d="M639.6 480H0V240.2h639.6z"/>

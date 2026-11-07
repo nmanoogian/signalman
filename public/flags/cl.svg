@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-cl" viewBox="0 0 640 480">
+  <g data-seams="underlay"><g fill-rule="evenodd" clip-path="url(#cl-a)" transform="scale(.9375)"><path fill="#fff" d="M256 0h512v256H256z" stroke="#fff" stroke-width="8.5333"/><path fill="#0039a6" d="M0 0h256v256H0z" stroke="#0039a6" stroke-width="8.5333"/><path fill="#d52b1e" d="M0 256h768v256H0z" stroke="#d52b1e" stroke-width="8.5333"/></g></g>
   <defs>
     <clipPath id="cl-a">
       <path fill-opacity=".7" d="M0 0h682.7v512H0z"/>

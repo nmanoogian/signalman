@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-eu" viewBox="0 0 640 480">
+  <g data-seams="underlay"><path fill="#039" d="M0 0h640v480H0z" stroke="#039" stroke-width="8"/></g>
   <defs>
     <g id="eu-d">
       <g id="eu-b">

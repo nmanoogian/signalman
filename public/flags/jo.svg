@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-jo" viewBox="0 0 640 480">
+  <g data-seams="underlay"><g clip-path="url(#jo-a)" transform="translate(110.5)scale(.9375)"><g fill-rule="evenodd" stroke-width="1pt"><path fill="#000001" d="M-117.8 0h1024v170.7h-1024z" stroke="#000001" stroke-width="8.5333"/><path fill="#fff" d="M-117.8 170.7h1024v170.6h-1024z" stroke="#fff" stroke-width="8.5333"/><path fill="#090" d="M-117.8 341.3h1024V512h-1024z" stroke="#090" stroke-width="8.5333"/></g></g></g>
   <defs>
     <clipPath id="jo-a">
       <path fill-opacity=".7" d="M-117.8 0h682.6v512h-682.6z"/>

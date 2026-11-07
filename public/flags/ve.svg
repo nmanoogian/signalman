@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-ve" viewBox="0 0 640 480">
+  <g data-seams="underlay"><path fill="#cf142b" d="M0 0h640v480H0z" stroke="#cf142b" stroke-width="8"/><path fill="#00247d" d="M0 0h640v320H0z" stroke="#00247d" stroke-width="8"/><path fill="#fc0" d="M0 0h640v160H0z" stroke="#fc0" stroke-width="8"/></g>
   <defs>
     <g id="ve-d" transform="translate(0 -36)">
       <g id="ve-c">

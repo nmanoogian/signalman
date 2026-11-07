@@ -4,6 +4,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { sealSeams } from "./flag-seams.mjs";
 
 const FLAG_ICONS_VERSION = "7.5.0";
 const REPO_ROOT = path.resolve(import.meta.dirname, "..");
@@ -104,8 +105,13 @@ const countries = fs
 
 fs.rmSync(FLAG_OUT_DIR, { recursive: true, force: true });
 fs.mkdirSync(FLAG_OUT_DIR, { recursive: true });
+// Each flag is copied with its seams sealed; see flag-seams.mjs for why.
+let sealedShapes = 0;
 for (const { code } of countries) {
-  fs.copyFileSync(path.join(flagsDir, `${code}.svg`), path.join(FLAG_OUT_DIR, `${code}.svg`));
+  const source = fs.readFileSync(path.join(flagsDir, `${code}.svg`), "utf8");
+  const { svg, sealed } = sealSeams(source);
+  sealedShapes += sealed;
+  fs.writeFileSync(path.join(FLAG_OUT_DIR, `${code}.svg`), svg);
 }
 
 const entries = countries
@@ -143,4 +149,7 @@ export function flagUrl(code: CountryCode): string {
 );
 
 fs.rmSync(workDir, { recursive: true, force: true });
-console.log(`Wrote ${countries.length} flags to public/flags and src/data/countries.ts`);
+console.log(
+  `Wrote ${countries.length} flags to public/flags and src/data/countries.ts ` +
+    `(${sealedShapes} straight-edged shapes copied into seam underlays)`,
+);

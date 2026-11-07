@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-gi" viewBox="0 0 640 480">
+  <g data-seams="underlay"><path fill="#da000c" d="M0 0h640v480H0z" stroke="#da000c" stroke-width="8"/><path fill="#fff" d="M0 0h640v321.6H0z" stroke="#fff" stroke-width="8"/></g>
   <path fill="#da000c" d="M0 0h640v480H0z"/>
   <path fill="#fff" d="M0 0h640v321.6H0z"/>
   <g stroke="#000" transform="translate(-160)scale(1.875)">

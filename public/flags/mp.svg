@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-mp" viewBox="0 0 640 480">
+  <g data-seams="underlay"><g clip-path="url(#mp-a)"><path fill="#0071bc" fill-rule="evenodd" d="M-160 0h960v480h-960z" stroke="#0071bc" stroke-width="8"/></g></g>
   <defs>
     <clipPath id="mp-a">
       <path fill-opacity=".7" d="M0 0h640v480H0z"/>

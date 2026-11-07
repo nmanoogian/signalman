@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" id="flag-icons-sy" viewBox="0 0 640 480">
+  <g data-seams="underlay"><path d="M0 0h640v480H0Z" stroke="#000" stroke-width="8"/><path fill="#fff" d="M0 0h640v320H0Z" stroke="#fff" stroke-width="8"/><path fill="#007a3d" d="M0 0h640v160H0Z" stroke="#007a3d" stroke-width="8"/></g>
   <path d="M0 0h640v480H0Z"/>
   <path fill="#fff" d="M0 0h640v320H0Z"/>
   <path fill="#007a3d" d="M0 0h640v160H0Z"/>

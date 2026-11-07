@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-om" viewBox="0 0 640 480">
+  <g data-seams="underlay"><g clip-path="url(#om-a)"><path fill="#ef2d29" fill-rule="evenodd" d="M-3.3-21.6H699v553H-3.3z" stroke="#ef2d29" stroke-width="8"/><path fill="#009025" fill-rule="evenodd" d="M174.6 317.3h535.7V525H174.6z" stroke="#009025" stroke-width="8"/><path fill="#fff" fill-rule="evenodd" d="M174.6-35.4h564.9v190h-565z" stroke="#fff" stroke-width="8"/></g></g>
   <defs>
     <clipPath id="om-a">
       <path fill-opacity=".7" d="M0 0h640v480H0z"/>

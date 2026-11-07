@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-ni" viewBox="0 0 640 480">
+  <g data-seams="underlay"><path fill="#0067c6" d="M0 0h640v480H0z" stroke="#0067c6" stroke-width="8"/><path fill="#fff" d="M0 160h640v160H0z" stroke="#fff" stroke-width="8"/></g>
   <defs>
     <linearGradient id="ni-f" x1="498.7" x2="500.6" y1="289.1" y2="283.4" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#510000"/>

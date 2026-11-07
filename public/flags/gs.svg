@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-gs" viewBox="0 0 640 480">
+  <g data-seams="underlay"><path fill="#006" d="M0 0h640v480H0z" stroke="#006" stroke-width="8"/><path fill="#012169" d="M0 0h320v240H0Z" stroke="#012169" stroke-width="8"/><path fill="#fff" d="M120.5 0v240h80V0ZM0 80v80h320V80Z" stroke="#fff" stroke-width="8"/><path fill="#c8102e" d="M0 96.5v48h320v-48ZM136.5 0v240h48V0Z" stroke="#c8102e" stroke-width="8"/></g>
   <defs>
     <linearGradient id="gs-b">
       <stop offset="0" stop-color="#d5dfff"/>

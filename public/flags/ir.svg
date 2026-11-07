@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-ir" viewBox="0 0 640 480">
+  <g data-seams="underlay"><g fill-rule="evenodd" clip-path="url(#ir-a)" transform="translate(80)scale(.9375)"><path fill="#fff" d="M-192 0h896v512h-896z" stroke="#fff" stroke-width="8.5333"/><path fill="#da0000" d="M-192 343.8h896V512h-896z" stroke="#da0000" stroke-width="8.5333"/><path fill="#239f40" d="M-192 0h896v168.2h-896z" stroke="#239f40" stroke-width="8.5333"/></g></g>
   <defs>
     <clipPath id="ir-a">
       <path fill-opacity=".7" d="M-85.3 0h682.7v512H-85.3z"/>
