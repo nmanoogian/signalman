@@ -12,6 +12,7 @@ interface MenuProps {
   fastMode: boolean;
   onToggleTileReveal: () => void;
   tileReveal: boolean;
+  onShowCredits: () => void;
   disabled: boolean;
 }
 
@@ -25,6 +26,7 @@ export function Menu({
   fastMode,
   onToggleTileReveal,
   tileReveal,
+  onShowCredits,
   disabled,
 }: MenuProps) {
   const [open, setOpen] = useState(false);
@@ -120,6 +122,14 @@ export function Menu({
             onClick={() => choose(onToggleTileReveal)}
           >
             Tile Reveal: {tileReveal ? "On" : "Off"}
+          </button>
+          <button
+            type="button"
+            role="menuitem"
+            className={styles.item}
+            onClick={() => choose(onShowCredits)}
+          >
+            Credits
           </button>
         </div>
       )}
