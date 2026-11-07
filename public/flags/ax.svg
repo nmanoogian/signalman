@@ -5,14 +5,14 @@
     </clipPath>
   </defs>
   <g clip-path="url(#ax-a)" transform="matrix(.56472 0 0 .56482 -60 -.1)">
-    <path fill="#0053a5" d="M0 0h1300v850H0z"/>
+    <path fill="#0053a5" d="M0 0h1300v850H0z" stroke="#0053a5" stroke-width="1.7706"/>
     <g fill="#ffce00">
-      <path d="M400 0h250v850H400z"/>
-      <path d="M0 300h1300v250H0z"/>
+      <path d="M400 0h250v850H400z" stroke="#ffce00" stroke-width="1.7706"/>
+      <path d="M0 300h1300v250H0z" stroke="#ffce00" stroke-width="1.7706"/>
     </g>
     <g fill="#d21034">
-      <path d="M475 0h100v850H475z"/>
-      <path d="M0 375h1300v100H0z"/>
+      <path d="M475 0h100v850H475z" stroke="#d21034" stroke-width="1.7706"/>
+      <path d="M0 375h1300v100H0z" stroke="#d21034" stroke-width="1.7706"/>
     </g>
   </g>
 </svg>

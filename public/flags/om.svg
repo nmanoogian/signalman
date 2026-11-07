@@ -5,8 +5,8 @@
     </clipPath>
   </defs>
   <g clip-path="url(#om-a)">
-    <path fill="#ef2d29" fill-rule="evenodd" d="M-3.3-21.6H699v553H-3.3z"/>
-    <path fill="#009025" fill-rule="evenodd" d="M174.6 317.3h535.7V525H174.6z"/>
+    <path fill="#ef2d29" fill-rule="evenodd" d="M-3.3-21.6H699v553H-3.3z" stroke="#ef2d29" stroke-width="1"/>
+    <path fill="#009025" fill-rule="evenodd" d="M174.6 317.3h535.7V525H174.6z" stroke="#009025" stroke-width="1"/>
     <path fill="#fff" fill-rule="evenodd" d="M174.6-35.4h564.9v190h-565z"/>
     <g stroke="#ef2d28">
       <g fill="#fff" fill-rule="evenodd" transform="matrix(.19848 0 0 .17744 111.3 -13.4)">

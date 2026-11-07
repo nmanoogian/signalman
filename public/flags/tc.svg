@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-tc" viewBox="0 0 640 480">
-  <path fill="#002868" d="M640 480V0H0v480z"/>
+  <path fill="#002868" d="M640 480V0H0v480z" stroke="#002868" stroke-width="1"/>
   <g fill="none" stroke="#000">
     <path fill="#fcd116" stroke-width="8" d="M590 174.6v90c0 60-30 124.6-105 159.6-75-35-105-99.6-105-159.6v-90z"/>
     <path stroke="#fff" stroke-width="7" d="M590 174.6v90c0 60-30 124.6-105 159.6-75-35-105-99.6-105-159.6v-90z"/>
@@ -42,9 +42,9 @@
       </g>
     </g>
   </g>
-  <path fill="#012169" d="M0 0h320v240H0Z"/>
+  <path fill="#012169" d="M0 0h320v240H0Z" stroke="#012169" stroke-width="1"/>
   <path fill="#fff" d="m37.5 0 122 90.5L281 0h39v31l-120 89.5 120 89V240h-40l-120-89.5L40.5 240H0v-30l119.5-89L0 32V0Z"/>
   <path fill="#c8102e" d="M212 140.5 320 220v20l-135.5-99.5Zm-92 10 3 17.5-96 72H0ZM320 0v1.5l-124.5 94 1-22L295 0ZM0 0l119.5 88h-30L0 21Z"/>
-  <path fill="#fff" d="M120.5 0v240h80V0ZM0 80v80h320V80Z"/>
-  <path fill="#c8102e" d="M0 96.5v48h320v-48zM136.5 0v240h48V0Z"/>
+  <path fill="#fff" d="M120.5 0v240h80V0ZM0 80v80h320V80Z" stroke="#fff" stroke-width="1"/>
+  <path fill="#c8102e" d="M0 96.5v48h320v-48zM136.5 0v240h48V0Z" stroke="#c8102e" stroke-width="1"/>
 </svg>
