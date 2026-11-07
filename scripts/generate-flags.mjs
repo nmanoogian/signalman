@@ -151,5 +151,5 @@ export function flagUrl(code: CountryCode): string {
 fs.rmSync(workDir, { recursive: true, force: true });
 console.log(
   `Wrote ${countries.length} flags to public/flags and src/data/countries.ts ` +
-    `(${sealedShapes} straight-edged shapes outlined against seams)`,
+    `(${sealedShapes} straight-edged shapes copied into seam underlays)`,
 );

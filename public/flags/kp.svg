@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-kp" viewBox="0 0 640 480">
-  <g data-seams="underlay"><g fill-rule="evenodd" clip-path="url(#kp-a)" transform="translate(-4.8 -.1)scale(.93768)"><path fill="#3e5698" d="M776 419H-76v92.5h852z" stroke="#3e5698" stroke-width="4.2658"/><path fill="#c60000" d="M776 397.6H-76V114.4h852z" stroke="#c60000" stroke-width="4.2658"/><path fill="#3e5698" d="M776 .6H-76V93h852z" stroke="#3e5698" stroke-width="4.2658"/></g></g>
+  <g data-seams="underlay"><g fill-rule="evenodd" clip-path="url(#kp-a)" transform="translate(-4.8 -.1)scale(.93768)"><path fill="#3e5698" d="M776 419H-76v92.5h852z" stroke="#3e5698" stroke-width="8.5317"/><path fill="#c60000" d="M776 397.6H-76V114.4h852z" stroke="#c60000" stroke-width="8.5317"/><path fill="#3e5698" d="M776 .6H-76V93h852z" stroke="#3e5698" stroke-width="8.5317"/></g></g>
   <defs>
     <clipPath id="kp-a">
       <path fill-opacity=".7" d="M5 .1h682.6V512H5.1z"/>

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-mz" viewBox="0 0 640 480">
-  <g data-seams="underlay"><g clip-path="url(#mz-a)" transform="scale(.9375)"><path fill="#009a00" fill-rule="evenodd" d="M0 0h768v160H0z" stroke="#009a00" stroke-width="4.2667"/><path fill="#000001" fill-rule="evenodd" d="M0 176h768v160H0z" stroke="#000001" stroke-width="4.2667"/><path fill="#ffca00" fill-rule="evenodd" d="M0 352h768v160H0z" stroke="#ffca00" stroke-width="4.2667"/></g></g>
+  <g data-seams="underlay"><g clip-path="url(#mz-a)" transform="scale(.9375)"><path fill="#009a00" fill-rule="evenodd" d="M0 0h768v160H0z" stroke="#009a00" stroke-width="8.5333"/><path fill="#000001" fill-rule="evenodd" d="M0 176h768v160H0z" stroke="#000001" stroke-width="8.5333"/><path fill="#ffca00" fill-rule="evenodd" d="M0 352h768v160H0z" stroke="#ffca00" stroke-width="8.5333"/></g></g>
   <defs>
     <clipPath id="mz-a">
       <path fill-opacity=".7" d="M0 0h682.7v512H0z"/>

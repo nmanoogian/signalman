@@ -26,6 +26,12 @@ describe("isRectilinearPath", () => {
     assert.ok(!isRectilinearPath(""));
   });
 
+  it("tolerates edges a hair off straight", () => {
+    // Mali's red stripe: the closing edge runs from x=425.7 back to x=425.8.
+    assert.ok(isRectilinearPath("M425.8 0H640v480H425.7z"));
+    assert.ok(!isRectilinearPath("M425.8 0H640v480H420z"));
+  });
+
   it("checks the closing line back to the subpath start", () => {
     // Two straight segments, but closing from (640,480) to (0,0) is a diagonal.
     assert.ok(!isRectilinearPath("M0 0h640v480z"));

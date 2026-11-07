@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-cn" viewBox="0 0 640 480">
-  <g data-seams="underlay"><path fill="#ee1c25" d="M0 0h640v480H0z" stroke="#ee1c25" stroke-width="4"/></g>
+  <g data-seams="underlay"><path fill="#ee1c25" d="M0 0h640v480H0z" stroke="#ee1c25" stroke-width="8"/></g>
   <defs>
     <path id="cn-a" fill="#ff0" d="M-.6.8 0-1 .6.8-1-.3h2z"/>
   </defs>

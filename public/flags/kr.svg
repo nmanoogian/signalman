@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-kr" viewBox="0 0 640 480">
-  <g data-seams="underlay"><g fill-rule="evenodd" clip-path="url(#kr-a)" transform="translate(89.8 .4)scale(.9375)"><path fill="#fff" d="M-95.8-.4H587v512H-95.8Z" stroke="#fff" stroke-width="4.2667"/></g></g>
+  <g data-seams="underlay"><g fill-rule="evenodd" clip-path="url(#kr-a)" transform="translate(89.8 .4)scale(.9375)"><path fill="#fff" d="M-95.8-.4H587v512H-95.8Z" stroke="#fff" stroke-width="8.5333"/></g></g>
   <defs>
     <clipPath id="kr-a">
       <path fill-opacity=".7" d="M-95.8-.4h682.7v512H-95.8z"/>

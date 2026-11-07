@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-bz" viewBox="0 0 640 480">
-  <g data-seams="underlay"><path fill="#ce1126" d="M0 0h640v480H0z" stroke="#ce1126" stroke-width="4"/><path fill="#003f87" d="M0 34.3h640v411.4H0z" stroke="#003f87" stroke-width="4"/></g>
+  <g data-seams="underlay"><path fill="#ce1126" d="M0 0h640v480H0z" stroke="#ce1126" stroke-width="8"/><path fill="#003f87" d="M0 34.3h640v411.4H0z" stroke="#003f87" stroke-width="8"/></g>
   <defs>
     <radialGradient id="bz-a">
       <stop offset="0" stop-color="#ffef5d"/>

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-pa" viewBox="0 0 640 480">
-  <g data-seams="underlay"><g clip-path="url(#pa-a)"><path fill="#fff" d="M0 0h640v480H0z" stroke="#fff" stroke-width="4"/><path fill="#db0000" fill-rule="evenodd" d="M323 3.6h358v221.7H323z" stroke="#db0000" stroke-width="4"/></g></g>
+  <g data-seams="underlay"><g clip-path="url(#pa-a)"><path fill="#fff" d="M0 0h640v480H0z" stroke="#fff" stroke-width="8"/><path fill="#fff" fill-rule="evenodd" d="M92.5 0h477.2v480H92.4z" stroke="#fff" stroke-width="8"/><path fill="#db0000" fill-rule="evenodd" d="M323 3.6h358v221.7H323z" stroke="#db0000" stroke-width="8"/></g></g>
   <defs>
     <clipPath id="pa-a">
       <path fill-opacity=".7" d="M0 0h640v480H0z"/>

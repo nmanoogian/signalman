@@ -16,8 +16,18 @@
 
 // In the flag's own units, on a 640×480 canvas. Each underlay shape grows by half this on every
 // side. It has to span at least a device pixel at the smallest size a flag is drawn, or the
-// underlay itself has seams; being hidden, it can afford to be generous.
-export const SEAM_OVERLAP = 4;
+// underlay itself has seams; being hidden, it can afford to be generous. Measured across every
+// flag at the app's sizes, 8 leaves fewer seams than 4 and changes nothing else visible.
+export const SEAM_OVERLAP = 8;
+
+// How far off horizontal or vertical a segment may run and still count as straight. Some
+// upstream drawings are a hair out, like Mali's red stripe, whose left edge runs from x=425.7
+// to x=425.8.
+const STRAIGHT_TOLERANCE = 0.5;
+
+function isAxisAligned(fromX, fromY, toX, toY) {
+  return Math.abs(toX - fromX) <= STRAIGHT_TOLERANCE || Math.abs(toY - fromY) <= STRAIGHT_TOLERANCE;
+}
 
 // Straight-edged shapes thinner than this (in canvas units) are emblem detail, not stripes, and
 // are too small for a seam beside them to be seen. Copying them into the underlay would let
@@ -112,7 +122,7 @@ export function rectilinearExtent(d) {
     box.maxY = Math.max(box.maxY, y);
   };
   const lineTo = (nextX, nextY) => {
-    if (nextX !== x && nextY !== y) return false;
+    if (!isAxisAligned(x, y, nextX, nextY)) return false;
     x = nextX;
     y = nextY;
     visit();
@@ -181,7 +191,7 @@ function rectilinearPolygonExtent(points) {
   const ys = values.filter((_, k) => k % 2 === 1);
   for (let k = 0; k < xs.length; k++) {
     const next = (k + 1) % xs.length;
-    if (xs[k] !== xs[next] && ys[k] !== ys[next]) return null;
+    if (!isAxisAligned(xs[k], ys[k], xs[next], ys[next])) return null;
   }
   return Math.min(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
 }

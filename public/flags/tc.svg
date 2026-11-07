@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-tc" viewBox="0 0 640 480">
-  <g data-seams="underlay"><path fill="#002868" d="M640 480V0H0v480z" stroke="#002868" stroke-width="4"/><path fill="#012169" d="M0 0h320v240H0Z" stroke="#012169" stroke-width="4"/><path fill="#fff" d="M120.5 0v240h80V0ZM0 80v80h320V80Z" stroke="#fff" stroke-width="4"/><path fill="#c8102e" d="M0 96.5v48h320v-48zM136.5 0v240h48V0Z" stroke="#c8102e" stroke-width="4"/></g>
+  <g data-seams="underlay"><path fill="#002868" d="M640 480V0H0v480z" stroke="#002868" stroke-width="8"/><path fill="#012169" d="M0 0h320v240H0Z" stroke="#012169" stroke-width="8"/><path fill="#fff" d="M120.5 0v240h80V0ZM0 80v80h320V80Z" stroke="#fff" stroke-width="8"/><path fill="#c8102e" d="M0 96.5v48h320v-48zM136.5 0v240h48V0Z" stroke="#c8102e" stroke-width="8"/></g>
   <path fill="#002868" d="M640 480V0H0v480z"/>
   <g fill="none" stroke="#000">
     <path fill="#fcd116" stroke-width="8" d="M590 174.6v90c0 60-30 124.6-105 159.6-75-35-105-99.6-105-159.6v-90z"/>

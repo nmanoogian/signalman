@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" id="flag-icons-by" viewBox="0 0 640 480">
-  <g data-seams="underlay"><path fill="#ce1720" d="M0 0h640v480H0Z" stroke="#ce1720" stroke-width="4"/><path fill="#007c30" d="M110 320h530v160H110Z" stroke="#007c30" stroke-width="4"/></g>
+  <g data-seams="underlay"><path fill="#ce1720" d="M0 0h640v480H0Z" stroke="#ce1720" stroke-width="8"/><path fill="#007c30" d="M110 320h530v160H110Z" stroke="#007c30" stroke-width="8"/></g>
   <defs>
     <clipPath id="by-a">
       <path d="M0 0h200v608h8v284l-8 8H0z"/>

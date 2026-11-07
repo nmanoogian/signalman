@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-im" viewBox="0 0 640 480">
-  <g data-seams="underlay"><g clip-path="url(#im-a)" transform="translate(72.8)scale(.94)"><path fill="#ba0000" fill-rule="evenodd" d="M629.4 512H-102V0h731.4z" stroke="#ba0000" stroke-width="4.2553"/></g></g>
+  <g data-seams="underlay"><g clip-path="url(#im-a)" transform="translate(72.8)scale(.94)"><path fill="#ba0000" fill-rule="evenodd" d="M629.4 512H-102V0h731.4z" stroke="#ba0000" stroke-width="8.5106"/></g></g>
   <defs>
     <clipPath id="im-a">
       <path fill-opacity=".7" d="M-77.6 0H605v512H-77.6z"/>

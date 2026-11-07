@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-pr" viewBox="0 0 640 480">
+  <g data-seams="underlay"><g fill-rule="evenodd" clip-path="url(#pr-a)" transform="translate(35)scale(.9375)"><path fill="#ed0000" d="M-37.3 0h768v512h-768z" stroke="#ed0000" stroke-width="8.5333"/><path fill="#fff" d="M-37.3 102.4h768v102.4h-768zm0 204.8h768v102.4h-768z" stroke="#fff" stroke-width="8.5333"/></g></g>
   <defs>
     <clipPath id="pr-a">
       <path fill-opacity=".7" d="M-37.3 0h682.7v512H-37.3z"/>

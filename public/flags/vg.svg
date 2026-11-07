@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-vg" viewBox="0 0 640 480">
-  <g data-seams="underlay"><path fill="#006" d="M0 0h640v480H0Z" stroke="#006" stroke-width="4"/><path fill="#012169" d="M0 0h320v240H0Z" stroke="#012169" stroke-width="4"/><path fill="#fff" d="M120.5 0v240h80V0ZM0 80v80h320V80Z" stroke="#fff" stroke-width="4"/><path fill="#c8102e" d="M0 96.5v48h320v-48zM136.5 0v240h48V0Z" stroke="#c8102e" stroke-width="4"/></g>
+  <g data-seams="underlay"><path fill="#006" d="M0 0h640v480H0Z" stroke="#006" stroke-width="8"/><path fill="#012169" d="M0 0h320v240H0Z" stroke="#012169" stroke-width="8"/><path fill="#fff" d="M120.5 0v240h80V0ZM0 80v80h320V80Z" stroke="#fff" stroke-width="8"/><path fill="#c8102e" d="M0 96.5v48h320v-48zM136.5 0v240h48V0Z" stroke="#c8102e" stroke-width="8"/></g>
   <defs>
     <linearGradient id="vg-a" x1="103.1" x2="92.6" y1="111.3" y2="107.8" gradientTransform="matrix(.99614 0 0 2.25255 703.8 -75)" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="red"/>

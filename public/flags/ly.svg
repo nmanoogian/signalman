@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-ly" viewBox="0 0 640 480">
-  <g data-seams="underlay"><g clip-path="url(#ly-a)" transform="matrix(.96 0 0 .96 -160 19.2)"><path fill="#239e46" d="M0-20h1000v500H0z" stroke="#239e46" stroke-width="4.1667"/><path fill="#000001" d="M0-20h1000v375H0z" stroke="#000001" stroke-width="4.1667"/><path fill="#e70013" d="M0-20h1000v125H0z" stroke="#e70013" stroke-width="4.1667"/></g></g>
+  <g data-seams="underlay"><g clip-path="url(#ly-a)" transform="matrix(.96 0 0 .96 -160 19.2)"><path fill="#239e46" d="M0-20h1000v500H0z" stroke="#239e46" stroke-width="8.3333"/><path fill="#000001" d="M0-20h1000v375H0z" stroke="#000001" stroke-width="8.3333"/><path fill="#e70013" d="M0-20h1000v125H0z" stroke="#e70013" stroke-width="8.3333"/></g></g>
   <defs>
     <clipPath id="ly-a">
       <path d="M166.7-20h666.6v500H166.7z"/>
