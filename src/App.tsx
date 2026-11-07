@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Carousel } from "./components/Carousel";
 import { Completion } from "./components/Completion";
+import { Credits } from "./components/Credits";
 import { GuessView } from "./components/GuessView";
 import { Menu } from "./components/Menu";
 import { RoundComplete } from "./components/RoundComplete";
@@ -30,6 +31,10 @@ export function App() {
   }, [tileReveal]);
 
   const toggleTileReveal = useCallback(() => setTileReveal((enabled) => !enabled), []);
+
+  const [showCredits, setShowCredits] = useState(false);
+  const openCredits = useCallback(() => setShowCredits(true), []);
+  const closeCredits = useCallback(() => setShowCredits(false), []);
 
   const handleSpinStart = useCallback(() => setSpinning(true), []);
 
@@ -183,6 +188,7 @@ export function App() {
           fastMode={fastMode}
           onToggleTileReveal={toggleTileReveal}
           tileReveal={tileReveal}
+          onShowCredits={openCredits}
           disabled={spinning}
         />
       </header>
@@ -193,6 +199,8 @@ export function App() {
         <VoiceBar voice={voice} stage={view.kind} canSkip={canSkip} />
         {renderProgress()}
       </footer>
+
+      {showCredits && <Credits onClose={closeCredits} />}
     </div>
   );
 }
