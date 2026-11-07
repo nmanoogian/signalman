@@ -42,7 +42,9 @@ export function Credits({ onClose }: CreditsProps) {
         <dl className={styles.list}>
           <div className={styles.entry}>
             <dt className={styles.name}>Erin</dt>
-            <dd className={styles.role}>Inventor of tile mode</dd>
+            <dd className={styles.role}>
+              Inventor of tile mode and heir to the Blooperstein family throne
+            </dd>
           </div>
         </dl>
         <button ref={closeRef} type="button" className={styles.close} onClick={onClose}>
