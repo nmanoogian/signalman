@@ -145,7 +145,7 @@ export function GuessView({
       <div className={styles.panel} aria-live="polite">
         {live && awaitingPause && (
           <>
-            <p className={styles.prompt}>Pause the moment you know it</p>
+            <p className={styles.prompt}>Pause to guess</p>
             <button type="button" className={styles.primary} onClick={reveal.pause} ref={pauseRef}>
               Pause &amp; Guess
             </button>
