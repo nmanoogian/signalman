@@ -69,8 +69,9 @@ defined in the script. Edit the script, not the generated files.
 The vendored SVGs are not byte-for-byte copies. Shapes that only touch, like Germany's three
 stripes, leave a hairline of background showing between them wherever an edge falls partway
 through a pixel, and the line flickers as flags scale and spin. `scripts/flag-seams.mjs`
-outlines each large straight-edged shape in its own colour so neighbours overlap slightly;
-emblems, curves and fine detail are left as drawn.
+adds a hidden underlay beneath each flag: copies of its large straight-edged shapes, each
+outlined in its own colour so neighbours overlap. The flag itself is left exactly as drawn,
+and the underlay only shows in the seam pixels the background would otherwise have filled.
 
 ## Country facts
 

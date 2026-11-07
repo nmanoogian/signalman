@@ -6,19 +6,26 @@
 // whatever sits behind the flag shows through as a thin line. Where the line lands depends on
 // the flag's rendered size and position, so it comes and goes as flags scale, shake and spin.
 //
-// The fix outlines each straight-edged shape in its own fill colour, so neighbours overlap by
-// SEAM_OVERLAP instead of meeting exactly. Only large shapes made purely of horizontal and
-// vertical edges are touched: stripes, crosses, bands and borders, which is where seams show.
-// Emblems, stars, curves and text are left as drawn, so their detail does not thicken.
+// The fix draws an underlay beneath the untouched flag: a copy of its large straight-edged
+// shapes (stripes, crosses, bands, borders), each outlined in its own colour so that
+// neighbours overlap instead of meeting. Wherever the flag itself covers a pixel fully, the
+// underlay is hidden and the flag looks exactly as drawn. Only at a seam, where the flag
+// would have let the background through, does the underlay show, and there it shows the
+// neighbouring stripe colours. Outlining the visible shapes instead would shift every edge
+// where a later shape overlaps an earlier one, which shows on large flags.
 
-// In the flag's own units, on a 640×480 canvas. Each shape grows by half this on every side,
-// so neighbours overlap by the full amount. The overlap has to span at least one device pixel
-// at the smallest size a flag is drawn, or the two edges still share a pixel.
-export const SEAM_OVERLAP = 1;
+// In the flag's own units, on a 640×480 canvas. Each underlay shape grows by half this on every
+// side. It has to span at least a device pixel at the smallest size a flag is drawn, or the
+// underlay itself has seams; being hidden, it can afford to be generous.
+export const SEAM_OVERLAP = 4;
 
 // Straight-edged shapes thinner than this (in canvas units) are emblem detail, not stripes, and
-// are too small for a seam beside them to be seen. Outlining them would only fatten them.
+// are too small for a seam beside them to be seen. Copying them into the underlay would let
+// them bleed past their edges where they sit on transparency.
 export const MIN_FEATURE = 16;
+
+// Marks a flag that already has an underlay, so sealing twice changes nothing.
+const UNDERLAY_MARK = 'data-seams="underlay"';
 
 // Shapes in here are references or masks rather than paint, so outlining them does nothing
 // useful at best and changes a clip region at worst.
@@ -207,45 +214,78 @@ function isSolidPaint(fill) {
   return fill !== "none" && !fill.startsWith("url(");
 }
 
+// Removes an id so the underlay's copies never shadow the originals that references point at.
+function withoutId(attributeText) {
+  return attributeText.replace(/\s+id="[^"]*"/, "");
+}
+
 export function sealSeams(svg, overlap = SEAM_OVERLAP) {
-  // Inherited state, one entry per open element.
-  const stack = [{ fill: "#000", scale: 1, eligible: true }];
+  if (svg.includes(UNDERLAY_MARK)) return { svg, sealed: 0 };
+
+  // Inherited state, one entry per open element. `copied` records whether the element's
+  // opening tag went into the underlay, so its closing tag can follow.
+  const stack = [{ fill: "#000", scale: 1, eligible: true, copied: true, root: true }];
+  const underlay = [];
+  let rootEnd = -1;
   let sealed = 0;
 
-  const output = svg.replace(
-    /<(\/?)([a-zA-Z][\w:-]*)([^>]*?)(\/?)>/g,
-    (tag, closing, name, rest, selfClosing) => {
-      if (closing) {
-        stack.pop();
-        return tag;
+  for (const match of svg.matchAll(/<(\/?)([a-zA-Z][\w:-]*)([^>]*?)(\/?)>/g)) {
+    const [tag, closing, name, rest, selfClosing] = match;
+    if (closing) {
+      const closed = stack.pop();
+      if (closed.copied && !closed.root) underlay.push(`</${name}>`);
+      continue;
+    }
+
+    const parent = stack.at(-1);
+    const attributes = parseAttributes(rest);
+    const transformScale = axisAlignedScale(attributes.get("transform"));
+    const isRoot = rootEnd === -1 && name === "svg";
+    const context = {
+      fill: attributes.get("fill") ?? parent.fill,
+      scale:
+        parent.scale === null || transformScale === null ? null : parent.scale * transformScale,
+      // Anything already outlined, see-through, or inside a reference container stays out of
+      // the underlay. Stroke inherits, so a stroke on an ancestor rules out its descendants.
+      eligible:
+        parent.eligible &&
+        !INERT_CONTAINERS.has(name) &&
+        !attributes.has("stroke") &&
+        !isTranslucent(attributes),
+      copied: false,
+      root: isRoot,
+    };
+
+    if (isRoot) {
+      rootEnd = match.index + tag.length;
+      context.copied = true;
+    } else if (parent.copied && context.eligible && name === "g") {
+      // Groups carry the transforms, clips and inherited fills the copied shapes rely on.
+      context.copied = true;
+      underlay.push(`<g${withoutId(rest)}${selfClosing}>`);
+    } else if (parent.copied && context.eligible && context.scale !== null) {
+      const extent = isSolidPaint(context.fill) ? straightEdgedExtent(name, attributes) : null;
+      if (extent !== null && extent * context.scale >= MIN_FEATURE) {
+        sealed += 1;
+        const width = Number((overlap / context.scale).toFixed(4));
+        underlay.push(
+          `<${name}${withoutId(rest)} stroke="${context.fill}" stroke-width="${width}"${selfClosing}>`,
+        );
       }
+    }
 
-      const parent = stack.at(-1);
-      const attributes = parseAttributes(rest);
-      const transformScale = axisAlignedScale(attributes.get("transform"));
-      const context = {
-        fill: attributes.get("fill") ?? parent.fill,
-        scale:
-          parent.scale === null || transformScale === null ? null : parent.scale * transformScale,
-        // Anything already outlined, see-through, or inside a reference container is left as is.
-        // Stroke inherits, so a stroke on an ancestor rules out its descendants too.
-        eligible:
-          parent.eligible &&
-          !INERT_CONTAINERS.has(name) &&
-          !attributes.has("stroke") &&
-          !isTranslucent(attributes),
-      };
-      if (!selfClosing) stack.push(context);
+    if (!selfClosing) stack.push(context);
+  }
 
-      if (!context.eligible || context.scale === null || !isSolidPaint(context.fill)) return tag;
-      const extent = straightEdgedExtent(name, attributes);
-      if (extent === null || extent * context.scale < MIN_FEATURE) return tag;
+  if (sealed === 0 || rootEnd === -1) return { svg, sealed: 0 };
 
-      sealed += 1;
-      const width = Number((overlap / context.scale).toFixed(4));
-      return `<${name}${rest} stroke="${context.fill}" stroke-width="${width}"${selfClosing}>`;
-    },
-  );
+  // Groups that ended up holding nothing are dropped.
+  let layer = underlay.join("");
+  for (let previous = ""; previous !== layer;) {
+    previous = layer;
+    layer = layer.replace(/<g\b[^>]*?(?:\/>|>\s*<\/g>)/g, "");
+  }
 
+  const output = `${svg.slice(0, rootEnd)}\n  <g ${UNDERLAY_MARK}>${layer}</g>${svg.slice(rootEnd)}`;
   return { svg: output, sealed };
 }

@@ -1,11 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-ag" viewBox="0 0 640 480">
+  <g data-seams="underlay"><g fill-rule="evenodd" clip-path="url(#ag-a)" transform="translate(74.7)scale(.9375)"><path fill="#fff" d="M-79.7 0H603v512H-79.7z" stroke="#fff" stroke-width="4.2667"/></g></g>
   <defs>
     <clipPath id="ag-a">
       <path fill-opacity=".7" d="M-79.7 0H603v512H-79.7z"/>
     </clipPath>
   </defs>
   <g fill-rule="evenodd" clip-path="url(#ag-a)" transform="translate(74.7)scale(.9375)">
-    <path fill="#fff" d="M-79.7 0H603v512H-79.7z" stroke="#fff" stroke-width="1.0667"/>
+    <path fill="#fff" d="M-79.7 0H603v512H-79.7z"/>
     <path fill="#000001" d="M-79.6 0H603v204.8H-79.7z"/>
     <path fill="#0072c6" d="M21.3 203.2h480v112h-480z"/>
     <path fill="#ce1126" d="M603 .1V512H261.6L603 0zM-79.7.1V512h341.3L-79.7 0z"/>

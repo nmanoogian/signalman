@@ -1,8 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-uz" viewBox="0 0 640 480">
-  <path fill="#1eb53a" d="M0 320h640v160H0z" stroke="#1eb53a" stroke-width="1"/>
-  <path fill="#0099b5" d="M0 0h640v160H0z" stroke="#0099b5" stroke-width="1"/>
-  <path fill="#ce1126" d="M0 153.6h640v172.8H0z" stroke="#ce1126" stroke-width="1"/>
-  <path fill="#fff" d="M0 163.2h640v153.6H0z" stroke="#fff" stroke-width="1"/>
+  <g data-seams="underlay"><path fill="#1eb53a" d="M0 320h640v160H0z" stroke="#1eb53a" stroke-width="4"/><path fill="#0099b5" d="M0 0h640v160H0z" stroke="#0099b5" stroke-width="4"/><path fill="#ce1126" d="M0 153.6h640v172.8H0z" stroke="#ce1126" stroke-width="4"/><path fill="#fff" d="M0 163.2h640v153.6H0z" stroke="#fff" stroke-width="4"/></g>
+  <path fill="#1eb53a" d="M0 320h640v160H0z"/>
+  <path fill="#0099b5" d="M0 0h640v160H0z"/>
+  <path fill="#ce1126" d="M0 153.6h640v172.8H0z"/>
+  <path fill="#fff" d="M0 163.2h640v153.6H0z"/>
   <circle cx="134.4" cy="76.8" r="57.6" fill="#fff"/>
   <circle cx="153.6" cy="76.8" r="57.6" fill="#0099b5"/>
   <g fill="#fff" transform="translate(261.1 122.9)scale(1.92)">

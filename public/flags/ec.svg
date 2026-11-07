@@ -1,8 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-ec" viewBox="0 0 640 480">
+  <g data-seams="underlay"><g fill-rule="evenodd" stroke-width="1pt"><path fill="#ffe800" d="M0 0h640v480H0z" stroke="#ffe800" stroke-width="4"/><path fill="#00148e" d="M0 240h640v240H0z" stroke="#00148e" stroke-width="4"/><path fill="#da0010" d="M0 360h640v120H0z" stroke="#da0010" stroke-width="4"/></g></g>
   <g fill-rule="evenodd" stroke-width="1pt">
-    <path fill="#ffe800" d="M0 0h640v480H0z" stroke="#ffe800" stroke-width="1"/>
-    <path fill="#00148e" d="M0 240h640v240H0z" stroke="#00148e" stroke-width="1"/>
-    <path fill="#da0010" d="M0 360h640v120H0z" stroke="#da0010" stroke-width="1"/>
+    <path fill="#ffe800" d="M0 0h640v480H0z"/>
+    <path fill="#00148e" d="M0 240h640v240H0z"/>
+    <path fill="#da0010" d="M0 360h640v120H0z"/>
   </g>
   <g fill-rule="evenodd">
     <path d="M269.6 290.8 197 367.3l-1.2-1.6 72.4-76.5 1.2 1.6zm50.4 12.5-94.8 100-1.6-1.6 94.7-100z"/>

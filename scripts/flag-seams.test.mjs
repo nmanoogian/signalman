@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { isRectilinearPath, MIN_FEATURE, rectilinearExtent, sealSeams } from "./flag-seams.mjs";
+import {
+  isRectilinearPath,
+  MIN_FEATURE,
+  rectilinearExtent,
+  SEAM_OVERLAP,
+  sealSeams,
+} from "./flag-seams.mjs";
 
 describe("isRectilinearPath", () => {
   it("accepts rectangles and crosses", () => {
@@ -38,25 +44,57 @@ describe("rectilinearExtent", () => {
   });
 });
 
+// The underlay is everything inside the marked group; the rest must be the input, untouched.
+function split(svg) {
+  const opening = '\n  <g data-seams="underlay">';
+  const start = svg.indexOf(opening);
+  if (start === -1) return { underlay: "", original: svg };
+  // Walk to the underlay's own closing tag, past any groups nested inside it.
+  let depth = 1;
+  const tags = /<g\b[^>]*?(\/?)>|<\/g>/g;
+  tags.lastIndex = start + opening.length;
+  for (let tag = tags.exec(svg); tag !== null; tag = tags.exec(svg)) {
+    if (tag[0] === "</g>") depth -= 1;
+    else if (tag[1] !== "/") depth += 1;
+    if (depth === 0) {
+      return {
+        underlay: svg.slice(start + opening.length, tag.index),
+        original: svg.slice(0, start) + svg.slice(tag.index + tag[0].length),
+      };
+    }
+  }
+  throw new Error("unclosed underlay");
+}
+
 describe("sealSeams", () => {
-  it("outlines each stripe in its own colour", () => {
-    const { svg, sealed } = sealSeams(
-      `<svg viewBox="0 0 640 480"><path fill="#fc0" d="M0 320h640v160H0z"/><path fill="red" d="M0 160h640v160H0z"/></svg>`,
-    );
+  it("leaves the flag as drawn and adds outlined copies of its stripes beneath it", () => {
+    const input = `<svg viewBox="0 0 640 480"><path fill="#fc0" d="M0 320h640v160H0z"/><path fill="red" d="M0 160h640v160H0z"/></svg>`;
+    const { svg, sealed } = sealSeams(input);
     assert.equal(sealed, 2);
-    assert.match(svg, /<path fill="#fc0" d="M0 320h640v160H0z" stroke="#fc0" stroke-width="1"\/>/);
-    assert.match(svg, /<path fill="red" d="M0 160h640v160H0z" stroke="red" stroke-width="1"\/>/);
-  });
-
-  it("uses an inherited fill, and black when there is none", () => {
-    const { svg } = sealSeams(
-      `<svg><g fill="#0057b8"><path d="M0 0h640v240H0z"/></g><path d="M0 240h640v240H0z"/></svg>`,
+    const { underlay, original } = split(svg);
+    assert.equal(original, input);
+    assert.equal(
+      underlay,
+      `<path fill="#fc0" d="M0 320h640v160H0z" stroke="#fc0" stroke-width="${SEAM_OVERLAP}"/>` +
+        `<path fill="red" d="M0 160h640v160H0z" stroke="red" stroke-width="${SEAM_OVERLAP}"/>`,
     );
-    assert.match(svg, /d="M0 0h640v240H0z" stroke="#0057b8"/);
-    assert.match(svg, /d="M0 240h640v240H0z" stroke="#000"/);
+    // Drawn first, so it sits beneath everything.
+    assert.ok(svg.startsWith(`<svg viewBox="0 0 640 480">\n  <g data-seams="underlay">`));
   });
 
-  it("leaves emblems, gradients, translucency, references and existing strokes alone", () => {
+  it("copies the groups a stripe depends on, without their ids", () => {
+    const { svg } = sealSeams(
+      `<svg><g id="x" fill="#0057b8" clip-path="url(#c)"><path id="y" d="M0 0h640v240H0z"/></g><path d="M0 240h640v240H0z"/></svg>`,
+    );
+    const { underlay } = split(svg);
+    assert.equal(
+      underlay,
+      `<g fill="#0057b8" clip-path="url(#c)"><path d="M0 0h640v240H0z" stroke="#0057b8" stroke-width="${SEAM_OVERLAP}"/></g>` +
+        `<path d="M0 240h640v240H0z" stroke="#000" stroke-width="${SEAM_OVERLAP}"/>`,
+    );
+  });
+
+  it("leaves emblems, gradients, translucency, references and existing strokes out", () => {
     const input = [
       `<svg>`,
       `<path fill="red" d="M0 0l10 10H0z"/>`,
@@ -78,7 +116,7 @@ describe("sealSeams", () => {
     assert.equal(svg, input);
   });
 
-  it("leaves thin emblem detail alone", () => {
+  it("leaves thin emblem detail out", () => {
     const thin = MIN_FEATURE - 1;
     const input = `<svg><path fill="red" d="M0 0h640v${thin}H0z"/><rect fill="red" width="${thin}" height="300"/></svg>`;
     assert.equal(sealSeams(input).sealed, 0);
@@ -87,11 +125,18 @@ describe("sealSeams", () => {
     assert.equal(sealSeams(scaled).sealed, 0);
   });
 
+  it("drops groups that end up empty", () => {
+    const { svg } = sealSeams(
+      `<svg><g fill="red"><circle r="5"/></g><path fill="red" d="M0 0h100v100H0z"/></svg>`,
+    );
+    assert.ok(!split(svg).underlay.includes("<g"));
+  });
+
   it("sizes the outline in canvas units under a scale", () => {
     const { svg } = sealSeams(
       `<svg><g transform="scale(.5)"><path fill="red" d="M0 0h100v100H0z"/></g></svg>`,
     );
-    assert.match(svg, /stroke-width="2"/);
+    assert.match(split(svg).underlay, new RegExp(`stroke-width="${SEAM_OVERLAP * 2}"`));
   });
 
   it("handles rects and rectilinear polygons", () => {

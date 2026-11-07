@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icons-mx" viewBox="0 0 640 480">
+  <g data-seams="underlay"><path fill="#ce1126" d="M426.7 0H640v480H426.7z" stroke="#ce1126" stroke-width="4"/><path fill="#fff" d="M213.3 0h213.4v480H213.3z" stroke="#fff" stroke-width="4"/><path fill="#006847" d="M0 0h213.3v480H0z" stroke="#006847" stroke-width="4"/></g>
   <defs>
     <radialGradient xlink:href="#mx-a" id="mx-b" cx="842.3" cy="103.7" r="25.9" gradientTransform="matrix(.14152 .03595 -.03453 .14198 213.1 162.4)" gradientUnits="userSpaceOnUse"/>
     <radialGradient xlink:href="#mx-a" id="mx-c" cx="651.5" cy="550.5" r="25.9" gradientTransform="matrix(-.13441 -.05384 .04964 -.12489 397.9 -24.3)" gradientUnits="userSpaceOnUse"/>
@@ -8,9 +9,9 @@
       <stop offset="1" stop-color="#f15770"/>
     </linearGradient>
   </defs>
-  <path fill="#ce1126" d="M426.7 0H640v480H426.7z" stroke="#ce1126" stroke-width="1"/>
-  <path fill="#fff" d="M213.3 0h213.4v480H213.3z" stroke="#fff" stroke-width="1"/>
-  <path fill="#006847" d="M0 0h213.3v480H0z" stroke="#006847" stroke-width="1"/>
+  <path fill="#ce1126" d="M426.7 0H640v480H426.7z"/>
+  <path fill="#fff" d="M213.3 0h213.4v480H213.3z"/>
+  <path fill="#006847" d="M0 0h213.3v480H0z"/>
   <path fill="#fcca3e" stroke="#aa8c30" stroke-width=".3" d="m355.8 289.4.2 4.5 1.7-1.1-1.3-3.7z"/>
   <circle cx="355.6" cy="288.2" r="1.4" fill="#fcca3e" stroke="#aa8c30" stroke-width=".2"/>
   <path fill="#fcca3e" stroke="#aa8c30" stroke-width=".3" d="m361.1 296.4-3.2-3.1-1.5 1.2 4.5 2.6z"/>

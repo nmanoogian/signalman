@@ -1,7 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-sm" viewBox="0 0 640 480">
+  <g data-seams="underlay"><g fill-rule="evenodd" stroke-width="1pt"><path fill="#19b6ef" d="M0 240h640v240H0z" stroke="#19b6ef" stroke-width="4"/><path fill="#fff" d="M0 0h640v240H0z" stroke="#fff" stroke-width="4"/></g></g>
   <g fill-rule="evenodd" stroke-width="1pt">
-    <path fill="#19b6ef" d="M0 240h640v240H0z" stroke="#19b6ef" stroke-width="1"/>
-    <path fill="#fff" d="M0 0h640v240H0z" stroke="#fff" stroke-width="1"/>
+    <path fill="#19b6ef" d="M0 240h640v240H0z"/>
+    <path fill="#fff" d="M0 0h640v240H0z"/>
   </g>
   <path fill="#fd0" fill-rule="evenodd" stroke="#7d6c00" stroke-width="2.4" d="M317 339.2C369.6 300 426 220 359.9 177.8c-12.3-2.4-26-1.7-32.7 3.6-3.5-2-6.3-1.8-9.8 1.9-2.5-3-5-4.4-10-2.9a41 41 0 0 0-31.5-3C218 211.8 253.4 294 317 339.1z"/>
   <g stroke="#3a9d4f">
